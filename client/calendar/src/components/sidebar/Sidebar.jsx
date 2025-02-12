@@ -29,7 +29,7 @@ function Sidebar() {
 
       {/* Sidebar */}
       <div
-        className={`w-84 min-h-screen fixed top-0 left-0 bg-black text-white transition-transform duration-300 ease-in-out
+        className={`w-[300px] min-h-screen fixed top-0 left-0 bg-black text-white transition-transform duration-300 ease-in-out
           ${isSidebarOpen ? "border-2 border-black" : "border-0"} md:border-2 md:border-black
           ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
       >

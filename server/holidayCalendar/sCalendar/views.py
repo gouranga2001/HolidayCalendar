@@ -23,7 +23,7 @@ def get_calendar(request, year, month):
         
         # Get previous month days
         prev_month_days = calendar.monthrange(year, month - 1)[1] if month > 1 else calendar.monthrange(year - 1, 12)[1]
-        start_offset = (first_weekday - 1) % 7  # Adjust for Monday start
+        start_offset = (first_weekday) % 7  # Adjust for Monday start
 
         days = []
 

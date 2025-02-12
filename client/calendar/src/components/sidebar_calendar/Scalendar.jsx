@@ -33,15 +33,15 @@ function Scalendar() {
 
 
     return (
-        <div className="w-full text-white bg-black p-4 rounded-md">
+        <div className="w-full text-white bg-black p-3 rounded-md">
             <div className="flex justify-between items-center">
                 <button onClick={handlePrevMonth} className="text-gray-400 hover:text-gray-200">
                     <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7" />
                     </svg>
                 </button>
-                <span className="text-2xl">{calendarData.month}</span>
-                <span className="text-2xl text-red-500">{calendarData.year}</span>
+                <span className="text-xl">{calendarData.month}</span>
+                <span className="text-xl text-red-500">{calendarData.year}</span>
                 <button onClick={handleNextMonth} className="text-gray-400 hover:text-gray-200">
                     <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7" />
@@ -56,7 +56,7 @@ function Scalendar() {
                 {calendarData.days.map(({ day, isCurrentMonth, isToday }, index) => (
                     <div
                         key={index}
-                        className={`p-2 text-center rounded-full 
+                        className={`p-1 text-center rounded-full 
                             ${isCurrentMonth ? 'text-white' : 'text-gray-500'}
                             ${isToday ? 'bg-blue-500' : 'hover:bg-gray-700'}`}
                     >
