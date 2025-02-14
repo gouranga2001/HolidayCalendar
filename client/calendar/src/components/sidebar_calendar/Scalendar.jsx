@@ -33,7 +33,7 @@ function Scalendar() {
 
 
     return (
-        <div className="w-full text-white bg-black p-3 rounded-md">
+        <div className="w-full text-white bg-[rgba(24,24,27,1)] p-3 rounded-md">
             <div className="flex justify-between items-center">
                 <button onClick={handlePrevMonth} className="text-gray-400 hover:text-gray-200">
                     <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
