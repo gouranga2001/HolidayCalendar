@@ -6,6 +6,7 @@ import Navbar from './components/navbar/Navbar'
 
 function App() {
   const [count, setCount] = useState(0)
+  const [isSidebarOpen, setSidebarOpen] = useState(true); // Sidebar state
 
   return (
     <>
@@ -15,6 +16,7 @@ function App() {
        <Navbar />
       </div>
       {/* <Scalendar/> */}
+      
      
       
       
