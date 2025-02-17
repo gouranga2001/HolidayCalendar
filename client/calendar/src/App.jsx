@@ -1,25 +1,27 @@
 import { useState } from 'react'
 import './App.css'
 import Sidebar from './components/sidebar/Sidebar'
-import Scalendar from './components/sidebar_calendar/Scalendar'
 import Navbar from './components/navbar/Navbar'
+import Day from './components/calendar_parts/Day'
 
 function App() {
-  const [count, setCount] = useState(0)
-  const [isSidebarOpen, setSidebarOpen] = useState(true); // Sidebar state
 
   return (
     <>
-      <div >
+      <div className='relative' >
 
-       <Sidebar />
-       <Navbar />
+        <Sidebar />
+        <Navbar />
+        <div className="mt-16 md:ml-[300px] p-4">
+          <Day />
+        </div>
+
       </div>
-      {/* <Scalendar/> */}
-      
      
-      
-      
+
+
+
+
     </>
   )
 }
