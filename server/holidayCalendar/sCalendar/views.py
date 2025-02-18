@@ -1,5 +1,5 @@
 import calendar
-from datetime import date
+from datetime import date,timedelta
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import Event
@@ -11,8 +11,8 @@ def get_events(request, year, month):
     serializer = EventSerializer(events, many=True)
     return Response(serializer.data)
 
-@api_view(['GET'])
 
+@api_view(['GET'])
 def get_calendar(request, year, month):
     try:
         year, month = int(year), int(month)
@@ -23,7 +23,7 @@ def get_calendar(request, year, month):
         
         # Get previous month days
         prev_month_days = calendar.monthrange(year, month - 1)[1] if month > 1 else calendar.monthrange(year - 1, 12)[1]
-        start_offset = (first_weekday) % 7  # Adjust for Monday start
+        start_offset = (first_weekday) % 7 
 
         days = []
 
@@ -50,3 +50,18 @@ def get_calendar(request, year, month):
         })
     except ValueError:
         return Response({"error": "Invalid year or month"}, status=400)
+
+    
+@api_view(['GET'])
+def get_date(request,offset=0):
+    try:
+        offset = int(request.GET.get("offset", offset)) 
+        todays_date = date.today() + timedelta(days=offset)
+        current_date = todays_date.day 
+        return Response({
+            current_date
+        })
+    except Exception as e:
+        return Response({
+            str(e)
+        },status=400)

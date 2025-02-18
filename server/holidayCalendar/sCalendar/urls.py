@@ -1,7 +1,9 @@
 from django.urls import path
-from .views import get_events,get_calendar
+from .views import get_events,get_calendar,get_date
 
 urlpatterns = [
     path("events/<int:year>/<int:month>/", get_events, name="get_events"),
     path("calendar/<int:year>/<int:month>/", get_calendar, name="get_calendar"),
+    path("calendar/day/",get_date,name="get_date"),
 ]
+
