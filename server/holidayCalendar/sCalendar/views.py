@@ -1,9 +1,10 @@
 import calendar
 from datetime import date,timedelta
+from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import Event
-from .serializers import EventSerializer
+from .models import Event,Note
+from .serializers import EventSerializer,NoteSerializer
 
 @api_view(['GET'])
 def get_events(request, year, month):
@@ -65,3 +66,14 @@ def get_date(request,offset=0):
         return Response({
             str(e)
         },status=400)
+    
+#create a note
+@api_view(['POST'])
+def create_note(request):
+    serializer = NoteSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    else:
+        # This will return the specific validation errors including empty note cases.
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
