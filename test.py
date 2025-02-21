@@ -1,6 +1,6 @@
 import calendar
 from datetime import date
-
+from django.utils import timezone
 
 def cal():
     first_day_of_month,number_of_days = calendar.monthrange(2025,1)
@@ -21,3 +21,5 @@ def printCalendar(year,month):
                     "isToday": i == today.day and month == today.month and year == today.year ,}
         print(calen)
 printCalendar(2025,2)
+today = timezone.now().date()
+print(today)

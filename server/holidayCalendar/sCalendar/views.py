@@ -5,6 +5,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import Event,Note
 from .serializers import EventSerializer,NoteSerializer
+from django.utils import timezone
 
 @api_view(['GET'])
 def get_events(request, year, month):
@@ -20,7 +21,7 @@ def get_calendar(request, year, month):
         total_days = calendar.monthrange(year, month)[1]
         first_weekday = calendar.monthrange(year, month)[0]  # 0 = Monday
 
-        today = date.today()
+        today = timezone.now().date()
         
         # Get previous month days
         prev_month_days = calendar.monthrange(year, month - 1)[1] if month > 1 else calendar.monthrange(year - 1, 12)[1]
@@ -77,3 +78,5 @@ def create_note(request):
     else:
         # This will return the specific validation errors including empty note cases.
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
