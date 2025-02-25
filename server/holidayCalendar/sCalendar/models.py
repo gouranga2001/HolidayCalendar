@@ -1,24 +1,7 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils import timezone
-
-
-def validate_nonempty(value):
-    if value is None or not value.strip():
-        raise ValidationError(
-            ("this field cannot be empty" ), params={"value": value},
-        )
-def validate_date(value):
-     current_date = timezone.now()
-     if value <= current_date:
-          raise ValidationError('start date cannot be past date')
-
-
-def validate_time(value):
-     current_time = timezone.now().time()
-     if value <= current_time:
-          raise ValidationError('end time cannot be in the past')
-
+    
 
 # Create your models here.
 class Event(models.Model):
@@ -27,11 +10,34 @@ class Event(models.Model):
     description = models.TextField(blank=True)
 
 class Note(models.Model):
-        note_title = models.TextField(max_length=100,null=False,blank=False,default="Default note",validators = [validate_nonempty])
-        note_description = models.TextField(max_length=100,null=False,blank=False,default="Default note",validators = [validate_nonempty])
-        start_date = models.DateTimeField(validators=[validate_date])
-        end_date = models.DateTimeField(validators=[validate_date])
-        start_time = models.TimeField(validators=[validate_time])
-        end_time = models.TimeField(validators=[validate_time])
+    note_title = models.TextField(max_length=100,null=False,blank=False,default="Default note")
+    note_description = models.TextField(max_length=100,null=False,blank=False,default="Default note")
+    start_date = models.DateTimeField(null=False,blank=False)
+    end_date = models.DateTimeField(null=False,blank=False)
+    start_time = models.TimeField(null=False,blank=False)
+    end_time = models.TimeField(null=False,blank=False)
 
-        
+    
+    def validate_dates(self):
+        current_date = timezone.localtime(timezone.now()).date()
+        if self.start_date.date() < current_date:
+            raise ValidationError("Start date cannot be in the past.")
+        if self.end_date.date() < current_date:
+            raise ValidationError("End date cannot be in the past.")
+
+    def validate_time(self):
+        current_datetime = timezone.localtime(timezone.now())
+        current_time = current_datetime.time()
+        if self.start_date.date() == current_datetime.date() and self.start_time < current_time:
+            raise ValidationError('time cannot be in the past')
+        if self.start_date.date() == self.end_date.date() and self.end_time < self.start_time:
+            raise ValidationError({'end_time':'end_time cannot be less than start_time'})
+    def clean(self):
+        self.validate_dates()
+        self.validate_time()
+    
+    def save(self, *args, **kwargs):
+        self.full_clean()  
+        super().save(*args, **kwargs)
+
+    

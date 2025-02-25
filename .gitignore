@@ -1,2 +1,6 @@
 .DS_Store
 test.py
+._.DS_Store
+._db.sqlite3
+__pycache__/0002_note.cpython-311.pyc
+
