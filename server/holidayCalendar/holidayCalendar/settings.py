@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'sCalendar',
     'rest_framework',
     'corsheaders',
+    'django_filters',
 ]
 
 MIDDLEWARE = [

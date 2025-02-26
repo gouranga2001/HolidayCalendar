@@ -6,6 +6,9 @@ from rest_framework.response import Response
 from .models import Event,Note
 from .serializers import EventSerializer,NoteSerializer
 from django.utils import timezone
+from rest_framework import filters
+from rest_framework.generics import ListAPIView
+import datetime
 
 @api_view(['GET'])
 def get_events(request, year, month):
@@ -123,3 +126,47 @@ def delete_notes(request,id):
         model.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
+
+    
+# @api_view(['GET'])
+# def search(request):
+#     query = request.GET.get('q', None)
+#     if query:
+#         results = Note.objects.filter(
+#             Q(note_title__icontains=query) |
+#             Q(start_date__icontains=query) |
+#             Q(end_date__icontains=query)
+#         )
+#     else:
+#         results = Note.objects.all()
+#     if not results.exists():
+#         return Response(status=status.HTTP_204_NO_CONTENT)
+
+#     serializer = NoteSerializer(results, many=True)
+#     return Response(serializer.data)
+
+class search_note(ListAPIView):
+    queryset = Note.objects.all()
+    serializer_class = NoteSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['note_title', 'start_date','end_date']
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        query = self.request.GET.get('q', None)
+        date_query = None
+
+        try:
+            date_query = datetime.striptime(query, "%d-%m-%Y").date()
+        except (ValueError, TypeError):
+            pass  # If it fails, it's not a date, so continue normally
+
+        if query:
+            # Smart searching across multiple fields
+            queryset = queryset.filter(
+                Q(note_title__icontains=query) |
+                (Q(start_date__date=date_query) if date_query else Q(start_date__icontains=query)) |
+                (Q(end_date__date=date_query) if date_query else Q(end_date__icontains=query))
+            )
+        
+        return queryset
