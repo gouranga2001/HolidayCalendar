@@ -5,10 +5,13 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import Event,Note
 from .serializers import EventSerializer,NoteSerializer
+import django_filters
 from django.utils import timezone
+from rest_framework import generics
 from rest_framework import filters
+from django_filters.rest_framework import DjangoFilterBackend,FilterSet
 from rest_framework.generics import ListAPIView
-import datetime
+
 
 @api_view(['GET'])
 def get_events(request, year, month):
@@ -16,6 +19,10 @@ def get_events(request, year, month):
     serializer = EventSerializer(events, many=True)
     return Response(serializer.data)
 
+
+
+
+#api to get the whole calendar for a month and can toggle between before and after months
 
 @api_view(['GET'])
 def get_calendar(request, year, month):
@@ -56,7 +63,7 @@ def get_calendar(request, year, month):
     except ValueError:
         return Response({"error": "Invalid year or month"}, status=400)
 
-    
+#api to get the todays date and can toggle between before and after the dates    
 @api_view(['GET'])
 def get_date(request,offset=0):
     try:
@@ -71,7 +78,7 @@ def get_date(request,offset=0):
             str(e)
         },status=400)
     
-#create a note
+#api to create a note
 @api_view(['POST'])
 def create_note(request):
     serializer = NoteSerializer(data=request.data)
@@ -83,6 +90,8 @@ def create_note(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+#api to get a particular notes by its id
+
 @api_view(['GET'])
 def get_notes_by_id(request,id):
     try:
@@ -93,6 +102,9 @@ def get_notes_by_id(request,id):
         serializer = NoteSerializer(model)
         return Response(serializer.data)
 
+
+
+#api to get all notes notes
 @api_view(['GET'])
 def get_all_notes(request):
     try:
@@ -102,7 +114,9 @@ def get_all_notes(request):
     if request.method == 'GET':
         serializer = NoteSerializer(model,many=True)
         return Response(serializer.data)
-    
+
+
+ #api to update notes   
 @api_view(['PUT'])
 def update_notes(request,id):
     try:
@@ -115,7 +129,7 @@ def update_notes(request,id):
             serializer.save()
             return Response(serializer.data)
 
-
+#api to delete notes
 @api_view(['DELETE'])
 def delete_notes(request,id):
     try:
@@ -128,45 +142,19 @@ def delete_notes(request,id):
     
 
     
-# @api_view(['GET'])
-# def search(request):
-#     query = request.GET.get('q', None)
-#     if query:
-#         results = Note.objects.filter(
-#             Q(note_title__icontains=query) |
-#             Q(start_date__icontains=query) |
-#             Q(end_date__icontains=query)
-#         )
-#     else:
-#         results = Note.objects.all()
-#     if not results.exists():
-#         return Response(status=status.HTTP_204_NO_CONTENT)
+# api to search with title(?search=) and search by start date(?=search_date=) or end date (?=end_date=)
 
-#     serializer = NoteSerializer(results, many=True)
-#     return Response(serializer.data)
+class search_filter(django_filters.FilterSet):
+    start_date = django_filters.DateFilter(field_name="start_date",lookup_expr = "date")
+    end_date = django_filters.DateFilter(field_name="end_date",lookup_expr = "date")
+    class Meta:
+        model = Note
+        fields = ['start_date','end_date']
 
-class search_note(ListAPIView):
+class search_view(generics.ListCreateAPIView):
     queryset = Note.objects.all()
     serializer_class = NoteSerializer
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['note_title', 'start_date','end_date']
+    filter_backends = [DjangoFilterBackend,filters.SearchFilter]
+    search_fields = ['note_title']
+    filterset_class = search_filter
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        query = self.request.GET.get('q', None)
-        date_query = None
-
-        try:
-            date_query = datetime.striptime(query, "%d-%m-%Y").date()
-        except (ValueError, TypeError):
-            pass  # If it fails, it's not a date, so continue normally
-
-        if query:
-            # Smart searching across multiple fields
-            queryset = queryset.filter(
-                Q(note_title__icontains=query) |
-                (Q(start_date__date=date_query) if date_query else Q(start_date__icontains=query)) |
-                (Q(end_date__date=date_query) if date_query else Q(end_date__icontains=query))
-            )
-        
-        return queryset

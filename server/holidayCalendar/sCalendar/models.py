@@ -11,7 +11,7 @@ class Event(models.Model):
 
 class Note(models.Model):
     note_title = models.TextField(max_length=100,null=False,blank=False,default="Default note")
-    note_description = models.TextField(max_length=100,null=False,blank=False,default="Default note")
+    note_description = models.TextField(max_length=100,null=True,blank=True,default="Default note")
     start_date = models.DateTimeField(null=False,blank=False)
     end_date = models.DateTimeField(null=False,blank=False)
     start_time = models.TimeField(null=False,blank=False)
