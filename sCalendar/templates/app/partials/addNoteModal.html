@@ -1,0 +1,91 @@
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'app/partials/addNoteModal.js' %}"></script>
+
+    <title>addNote</title>
+</head>
+
+<body>
+    <div>
+        <div class="fixed inset-0 bg-black/40 flex justify-center items-center md:left-[300px] hidden" id="modal">
+
+            <div class="w-[600px] m-3">
+
+                <div class="bg-white p-4 rounded-lg shadow-lg">
+                    <button id="close_modal_button" class="text-black text-xl place-self-end cursor-pointer">
+                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                            stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                    <form class="max-w-sm mx-auto" id="createNote" method="post">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            <label for="title" class="block mb-1 text-sm font-medium text-gray-900">Title</label>
+                            <input type="text" id="title"
+                                class="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-red-500 focus:border-red-500"
+                                placeholder="Your Title" required />
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="text" class="block mb-1 text-sm font-medium text-gray-900">Description</label>
+                            <input type="text" id="text"
+                                class="w-full p-4 border border-gray-300 rounded-lg shadow-sm focus:ring-red-500 focus:border-red-500"
+                                placeholder="Your Description" />
+                        </div>
+
+                        <div class="flex space-x-4">
+                            <div class="w-1/2">
+                                <label for="startDate" class="block mb-1 text-sm font-medium text-gray-900">Start
+                                    Date</label>
+                                <input type="date" id="startDate"
+                                    class="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-red-500 focus:border-red-500"
+                                    required />
+                            </div>
+                            <div class="w-1/2">
+                                <label for="endDate" class="block mb-1 text-sm font-medium text-gray-900">End
+                                    Date</label>
+                                <input type="date" id="endDate"
+                                    class="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-red-500 focus:border-red-500"
+                                    required />
+                            </div>
+                        </div>
+
+                        <div class="flex space-x-4 mt-4">
+                            <div class="w-1/2">
+                                <label for="startTime" class="block mb-1 text-sm font-medium text-gray-900">Start
+                                    Time</label>
+                                <input type="time" id="startTime"
+                                    class="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-red-500 focus:border-red-500"
+                                    required value="12:00" />
+                            </div>
+                            <div class="w-1/2">
+                                <label for="endTime" class="block mb-1 text-sm font-medium text-gray-900">End
+                                    Time</label>
+                                <input type="time" id="endTime"
+                                    class="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-red-500 focus:border-red-500"
+                                    required value="12:00" />
+                            </div>
+                        </div>
+
+                        <button type="submit"
+                            class="w-full text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-4 mb-8">
+                            Create Note
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+
+        </div>
+    </div>
+
+
+
+</body>
