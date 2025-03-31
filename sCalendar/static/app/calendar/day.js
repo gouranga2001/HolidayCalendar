@@ -6,57 +6,60 @@
 // });
 
 $(document).ready(function () {
-    function loadEvents(date) {
-        $.ajax({
-            url: "/api/calendar/filter_note/", // Make sure this is the correct URL
-            type: "GET",
-            data: {
-                start_date: date,
-                end_date: date
+   function getEvents(){
+    let today = new Date();
+    let year = today.getFullYear();
+    let month = String(today.getMonth() + 1).padStart(2, '0'); // Month is zero-indexed, so add 1
+    let day = String(today.getDate()).padStart(2, '0'); // Ensure two digits
+
+    let currentDate = `${year}-${month}-${day}`;
+    console.log(currentDate);
+
+    $.ajax({
+        type:"GET",
+        url: "api/calendar/filter_note/",
+        data:{  
+                start_date : currentDate,
+                end_date : currentDate
             },
-            success: function (data) {
-                console.log(data); // Debug to check if correct data is being received
-                displayEvents(data);
-            },
-            error: function (xhr, status, error) {
-                console.error("Error loading events:", error);
-            }
-        });
-    }
+        success: function(response){
+            console.log(response)
+            displayEvents(response)
+        },
+        error: function (xhr, status, error) {
+            console.error(error);
+        }
+        
+    })
+   }
+   function displayEvents(events) {
+    $(".time").find(".event-box").remove(); // Clear previous events
 
-    function displayEvents(events) {
-        $(".event").remove(); // Remove old events before reloading
+    events.forEach(event => {
+        let startTime = event.start_time.split(":");  // Split time (HH:MM:SS)
+        let endTime = event.end_time.split(":");
 
-        events.forEach(event => {
-            let startHour = parseInt(event.start_time.split(":")[0]);
-            let startMinutes = parseInt(event.start_time.split(":")[1]);
-            let endHour = parseInt(event.end_time.split(":")[0]);
-            let endMinutes = parseInt(event.end_time.split(":")[1]);
+        let startHour = parseInt(startTime[0]) + parseInt(startTime[1]) / 60;
+        let endHour = parseInt(endTime[0]) + parseInt(endTime[1]) / 60;
 
-            let duration = ((endHour * 60 + endMinutes) - (startHour * 60 + startMinutes)); // Duration in minutes
+        let duration = endHour - startHour;  // Calculate duration in hours
 
-            // Find the correct hour block using data-hour attribute
-            let $hourBlock = $(`.time [data-hour="${startHour}"] .event-container`);
+        let topPercentage = Math.round((startHour / 24) * 100);
+        let heightPercentage = Math.round((duration / 24) * 100);
 
-            if ($hourBlock.length) {
-                let eventHtml = `
-                <div class="absolute left-0 bg-blue-500 text-white p-2 rounded-md shadow-md event"
-                    style="
-                        top: ${startMinutes * (8 / 60)}rem; /* Adjust positioning within the hour */
-                        height: ${(duration / 60) * 8}rem; /* Height based on duration */
-                        width: calc(100% - 1rem);
-                    ">
-                    ${event.note_title}
-                </div>
-            `;
-                $hourBlock.append(eventHtml);
-            }
-        });
-    }
+        let eventBox = `
+            <div class="event-box absolute left-1/4 w-3/4 bg-blue-500 text-white p-2 rounded-md shadow-md"
+                 style="top: ${topPercentage}%; height: ${heightPercentage}%; position: absolute; transition: all 0.3s ease-in-out;">
+                <p class="font-bold">${event.note_title}</p>
+                <p class="text-sm">${event.note_description}</p>
+            </div>
+        `;
 
-    // Load today's events by default
-    let currentDate = new Date().toISOString().split('T')[0];
-    loadEvents(currentDate);
+        $(".time").append(eventBox); // Add event to the timeline
+    });
+}
+   getEvents();
+   
 });
 
 

@@ -6,3 +6,16 @@ __pycache__/0002_note.cpython-311.pyc
 **/__pycache__/
 __pycache__/
 *.pyc
+venv/
+.venv/
+env/
+*/venv/
+*/.venv/
+*/env/
+*.log
+*.sqlite3
+.env
+*.env
+.vscode/
+.idea/
+*.swp
