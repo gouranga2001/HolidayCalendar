@@ -35,8 +35,8 @@ def get_calendar(request, year, month):
         total_days = calendar.monthrange(year, month)[1]
         first_weekday = calendar.monthrange(year, month)[0]  # 0 = Monday
 
-        today = timezone.localtime(timezone.now()).date()
-
+        # today = timezone.localtime(timezone.now()).date()
+        today = datetime.now()
         
         # Get previous month days
         prev_month_days = calendar.monthrange(year, month - 1)[1] if month > 1 else calendar.monthrange(year - 1, 12)[1]
@@ -171,7 +171,8 @@ def get_notes_based_on_date(request):
 
 
 def notes_view(request, view_type):
-    today = timezone.localtime(timezone.now()).date()
+    # today = timezone.localtime(timezone.now()).date()
+    today = datetime.now()
 
 
     if view_type == "day":
