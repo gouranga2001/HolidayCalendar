@@ -30,28 +30,31 @@ $(document).ready(function () {
     $(".time").find(".event-box").remove(); // Clear previous events
 
     events.forEach(event => {
-        let startTime = event.start_time.split(":");  // Split time (HH:MM:SS)
-        let endTime = event.end_time.split(":");
+        let [sh, sm] = event.start_time.split(":").map(Number);
+        let [eh, em] = event.end_time.split(":").map(Number);
 
-        let startHour = parseInt(startTime[0]) + parseInt(startTime[1]) / 60;
-        let endHour = parseInt(endTime[0]) + parseInt(endTime[1]) / 60;
+        let startHour = sh + sm / 60;
+        let endHour = eh + em / 60;
+        let duration = endHour - startHour;
 
-        let duration = endHour - startHour;  // Calculate duration in hours
+        // Each hour = 60px height → total 1440px
+        let top = startHour * 60;
+        let height = Math.max(duration * 60, 30);  // Minimum height: 30px
 
-        let topPercentage = Math.round((startHour / 24) * 100);
-        let heightPercentage = Math.round((duration / 24) * 100);
 
-        let eventBox = `
-            <div class="event-box absolute left-1/4 w-3/4 bg-blue-500 text-white p-2 rounded-md shadow-md"
-                 style="top: ${topPercentage}%; height: ${heightPercentage}%; position: absolute; transition: all 0.3s ease-in-out;">
-                <p class="font-bold">${event.note_title}</p>
-                <p class="text-sm">${event.note_description}</p>
+        const eventBox = `
+            <div class="event-box absolute left-[150px] right-4 bg-blue-500 text-white p-2 rounded-md shadow-md"
+                 style="top: ${top}px; height: ${height}px;">
+                <p class="font-bold text-[13px] leading-tight">${event.note_title}</p>
+                <p class="text-[12px] leading-snug">${event.note_description}</p>
+
             </div>
         `;
 
-        $(".time").append(eventBox); // Add event to the timeline
+        $(".time").append(eventBox);
     });
 }
+
    getEvents();
    
 });

@@ -19,14 +19,14 @@ class Note(models.Model):
 
     
     def validate_dates(self):
-        current_date = timezone.localtime(timezone.now()).date()
+        current_date = timezone.now().date()
         if self.start_date.date() < current_date:
             raise ValidationError("Start date cannot be in the past.")
         if self.end_date.date() < current_date:
             raise ValidationError("End date cannot be in the past.")
 
     def validate_time(self):
-        current_datetime = timezone.localtime(timezone.now())
+        current_datetime = timezone.now()
         current_time = current_datetime.time()
         if self.start_date.date() == current_datetime.date() and self.start_time < current_time:
             raise ValidationError('time cannot be in the past')

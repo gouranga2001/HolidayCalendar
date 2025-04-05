@@ -15,32 +15,35 @@
 <body>
     <div class="shadow-lg bg-white rounded-md flex flex-row transition-all">
 
-        <div class="w-full min-h-screen p-2 time">
+        <div class="w-full relative h-[1440px] time pl-20 overflow-y-auto border-l border-gray-300">
             {% for i in time %}
             {% if i >= 12 %}
             {% with perriod="PM" %}
             {% if i == 12 %}
             {% with hour=12 %}
-            <div class="py-8 border-gray-400 flex items-center justify-center text-center w-auto m2">
-                   <span class="whitespace-nowrap"> {{ hour }} {{ perriod }}</span>    
-                <div class='w-full border-t border-gray-400 border-dotted p-2 m-2 '></div>
+            <div class="relative h-[60px] flex items-center gap-2 px-4">
+                <span class="text-sm whitespace-nowrap w-14">{{ hour }} {{ perriod }}</span>
+                <div class="w-full border-t border-dotted border-gray-300"></div>
             </div>
+            
             {% endwith %}
             {% else %}
             {% with hour=i|add:"-12" %}
-            <div class="py-8 border-gray-400 flex items-center justify-center text-center w-full m-2">
-                <span class="whitespace-nowrap"> {{ hour }} {{ perriod }}</span> 
-                <div class='w-full border-t border-gray-400 border-dotted  p-2 m-2'></div>
+            <div class="relative h-[60px] flex items-center gap-2 px-4">
+                <span class="text-sm whitespace-nowrap w-14">{{ hour }} {{ perriod }}</span>
+                <div class="w-full border-t border-dotted border-gray-300"></div>
             </div>
+            
             {% endwith %}
             {% endif %}
             {% endwith %}
             {% else %}
             {% with perriod="AM" hour=i %}
-            <div class="py-8 border-gray-400 flex items-center justify-center text-center w-full  m-2">
-                <span class="whitespace-nowrap"> {{ hour }} {{ perriod }}</span> 
-                <div class='w-full border-t border-gray-400 border-dotted p-2 m-2'></div>
+            <div class="relative h-[60px] flex items-center gap-2 px-4">
+                <span class="text-sm whitespace-nowrap w-14">{{ hour }} {{ perriod }}</span>
+                <div class="w-full border-t border-dotted border-gray-300"></div>
             </div>
+            
             {% endwith %}
             {% endif %}
             {% endfor %}
