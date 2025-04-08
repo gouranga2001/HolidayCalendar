@@ -27,33 +27,69 @@ $(document).ready(function () {
     })
    }
    function displayEvents(events) {
-    $(".time").find(".event-box").remove(); // Clear previous events
+    $(".time").find(".event-box").remove();
 
-    events.forEach(event => {
-        let [sh, sm] = event.start_time.split(":").map(Number);
-        let [eh, em] = event.end_time.split(":").map(Number);
+    // Constants
+    const containerLeft = 150; // Left padding of the time slot
+    const containerRight = 16; // Tailwind right-4 = 16px
+    const containerWidth = $(".time").width() - containerLeft - containerRight;
+    const gap = 6;
 
-        let startHour = sh + sm / 60;
-        let endHour = eh + em / 60;
-        let duration = endHour - startHour;
+    // Parse event times and sort
+    const parsedEvents = events.map((e, i) => {
+        const [sh, sm] = e.start_time.split(":").map(Number);
+        const [eh, em] = e.end_time.split(":").map(Number);
+        return {
+            ...e,
+            id: i,
+            start: sh + sm / 60,
+            end: eh + em / 60
+        };
+    }).sort((a, b) => a.start - b.start);
 
-        // Each hour = 60px height → total 1440px
-        let top = startHour * 60;
-        let height = Math.max(duration * 60, 30);  // Minimum height: 30px
+    // Group into clusters of overlapping events
+    const clusters = [];
+    let currentCluster = [];
 
+    parsedEvents.forEach(event => {
+        if (currentCluster.length === 0) {
+            currentCluster.push(event);
+        } else {
+            const last = currentCluster[currentCluster.length - 1];
+            if (event.start < Math.max(...currentCluster.map(e => e.end))) {
+                currentCluster.push(event);
+            } else {
+                clusters.push([...currentCluster]);
+                currentCluster = [event];
+            }
+        }
+    });
+    if (currentCluster.length) clusters.push(currentCluster);
 
-        const eventBox = `
-            <div class="event-box absolute left-[150px] right-4 bg-blue-500 text-white p-2 rounded-md shadow-md"
-                 style="top: ${top}px; height: ${height}px;">
-                <p class="font-bold text-[13px] leading-tight">${event.note_title}</p>
-                <p class="text-[12px] leading-snug">${event.note_description}</p>
+    // Render each cluster
+    clusters.forEach(cluster => {
+        const columnCount = cluster.length;
+        const totalGap = (columnCount - 1) * gap;
+        const colWidth = (containerWidth - totalGap) / columnCount;
 
-            </div>
-        `;
+        cluster.forEach((event, index) => {
+            const top = event.start * 60;
+            const duration = event.end - event.start;
+            const height = Math.max(duration * 60, 30);
+            const left = containerLeft + index * (colWidth + gap);
 
-        $(".time").append(eventBox);
+            const eventBox = `
+                <div class="event-box absolute bg-blue-500 text-white p-2 rounded-md shadow-md text-[13px] leading-tight"
+                    style="top: ${top}px; height: ${height}px; left: ${left}px; width: ${colWidth}px;">
+                    <p class="font-bold">${event.note_title}</p>
+                </div>
+            `;
+
+            $(".time").append(eventBox);
+        });
     });
 }
+
 
    getEvents();
    
