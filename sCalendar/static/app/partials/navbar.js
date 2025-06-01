@@ -38,4 +38,6 @@ $(document).ready(function () {
         let newState = $(this).text();
         updateState(newState);
     });
+
+
 });

@@ -215,6 +215,8 @@ def day_view(request):
         day["time"].append(i)
     return day
 
+def week_view(request):
+    return render(request,"app/calendar/week.html")
 
 def add_note(request):
     return render(request,"app/partials/addNoteModal.html")

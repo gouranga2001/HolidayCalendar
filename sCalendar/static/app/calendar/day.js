@@ -29,64 +29,61 @@ $(document).ready(function () {
    function displayEvents(events) {
     $(".time").find(".event-box").remove();
 
-    // Constants
-    const containerLeft = 150; // Left padding of the time slot
-    const containerRight = 16; // Tailwind right-4 = 16px
-    const containerWidth = $(".time").width() - containerLeft - containerRight;
+    const containerLeft = 150;
+    const containerRight = 16;
     const gap = 6;
+    const containerWidth = $(".time").width() - containerLeft - containerRight;
 
-    // Parse event times and sort
-    const parsedEvents = events.map((e, i) => {
-        const [sh, sm] = e.start_time.split(":").map(Number);
-        const [eh, em] = e.end_time.split(":").map(Number);
-        return {
-            ...e,
-            id: i,
-            start: sh + sm / 60,
-            end: eh + em / 60
+    const parsed = parseAndSort(events);
+    const clusters = groupOverlapping(parsed);
+    
+    clusters.forEach(cluster => renderCluster(cluster, containerLeft, containerWidth, gap));
+}
+
+function parseAndSort(events) {
+    return events.map((e, i) => {
+        const toHour = time => {
+            const [h, m] = time.split(":").map(Number);
+            return h + m / 60;
         };
+        return { ...e, id: i, start: toHour(e.start_time), end: toHour(e.end_time) };
     }).sort((a, b) => a.start - b.start);
+}
 
-    // Group into clusters of overlapping events
+function groupOverlapping(events) {
     const clusters = [];
-    let currentCluster = [];
+    let current = [];
 
-    parsedEvents.forEach(event => {
-        if (currentCluster.length === 0) {
-            currentCluster.push(event);
+    events.forEach(event => {
+        const lastEnd = Math.max(...current.map(e => e.end), -Infinity);
+        if (event.start < lastEnd) {
+            current.push(event);
         } else {
-            const last = currentCluster[currentCluster.length - 1];
-            if (event.start < Math.max(...currentCluster.map(e => e.end))) {
-                currentCluster.push(event);
-            } else {
-                clusters.push([...currentCluster]);
-                currentCluster = [event];
-            }
+            if (current.length) clusters.push(current);
+            current = [event];
         }
     });
-    if (currentCluster.length) clusters.push(currentCluster);
+    if (current.length) clusters.push(current);
+    return clusters;
+}
 
-    // Render each cluster
-    clusters.forEach(cluster => {
-        const columnCount = cluster.length;
-        const totalGap = (columnCount - 1) * gap;
-        const colWidth = (containerWidth - totalGap) / columnCount;
+function renderCluster(cluster, containerLeft, containerWidth, gap) {
+    const cols = cluster.length;
+    const totalGap = (cols - 1) * gap;
+    const colWidth = (containerWidth - totalGap) / cols;
 
-        cluster.forEach((event, index) => {
-            const top = event.start * 60;
-            const duration = event.end - event.start;
-            const height = Math.max(duration * 60, 30);
-            const left = containerLeft + index * (colWidth + gap);
+    cluster.forEach((event, i) => {
+        const top = event.start * 60;
+        const height = Math.max((event.end - event.start) * 60, 30);
+        const left = containerLeft + i * (colWidth + gap);
 
-            const eventBox = `
-                <div class="event-box absolute bg-blue-500 text-white p-2 rounded-md shadow-md text-[13px] leading-tight"
-                    style="top: ${top}px; height: ${height}px; left: ${left}px; width: ${colWidth}px;">
-                    <p class="font-bold">${event.note_title}</p>
-                </div>
-            `;
-
-            $(".time").append(eventBox);
-        });
+        const html = `
+            <div class="event-box absolute bg-blue-500 text-white p-2 rounded-md shadow-md text-[13px] leading-tight"
+                 style="top: ${top}px; height: ${height}px; left: ${left}px; width: ${colWidth}px;">
+                <p class="font-bold">${event.note_title}</p>
+            </div>
+        `;
+        $(".time").append(html);
     });
 }
 
