@@ -1,8 +1,8 @@
 
 $(document).ready(function(){
     // function to show the respectative view when clicking on the navbar
-    $('#weekView, #monthView').hide();
-    $('#dayView').show();
+    $('#dayView, #monthView').hide();
+    $(' #weekView').show();
     $('.day, .week, .month').click(function(){
         const viewMap = {
             'day': '#dayView',

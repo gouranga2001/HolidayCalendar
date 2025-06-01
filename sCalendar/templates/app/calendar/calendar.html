@@ -8,17 +8,22 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{% static 'app/calendar/calendar.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="{% static 'app/calendar/calendar.js' %}"></script>
 </head>
 <body>
-    <body class="bg-gray-100 text-white">
+    <body class=" text-white">
 
     <div class="container mx-auto p-4">
         <!-- Calendar Header -->
-        <div class="flex justify-between items-center p- rounded-md">
-            <button id="prevMonth" class="text-gray-400 hover:bg-gray-700 p-2 rounded">◀</button>
+        <div class="flex justify-around items-center rounded-md ">
+            
             <span id="calendarMonth" class="text-xl"></span>
             <span id="calendarYear" class="text-xl text-red-500"></span>
-            <button id="nextMonth" class="text-gray-400 hover:bg-gray-700 p-2 rounded">▶</button>
+            <div class="flex items-center flex-shrink-0">
+                 <button id="prevMonth" class=" p-2 cursor-pointer hover:bg-transparent"> <img src="{% static 'assets/previous.svg' %}" alt="Plus Icon" class="w-5 h-5 rounded stroke-white"></button>
+            <button id="nextMonth" class="cursor-pointer p-2 hover:bg-transparent"> <img src="{% static 'assets/next.svg' %}" alt="Plus Icon" class="w-5 h-5 rounded stroke-white"></button>
+            </div>
+           
         </div>
 
         <!-- Calendar Grid -->
@@ -36,6 +41,6 @@
         <div id="calendarDays" class="grid grid-cols-7 gap-1 mt-1"></div>
     </div>
 
-    <script src="{% static 'app/calendar/calendar.js' %}"></script>
+    
 </body>
 </html>

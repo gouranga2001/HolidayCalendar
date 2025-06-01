@@ -35,7 +35,7 @@
         {% include 'app/partials/navbar.html' %}
     </div>
 
-    <div class="mt-20 md:ml-[300px] p-4 " id="dayView">
+    <div class="mt-20 md:ml-[300px] p-4 hidden" id="dayView">
         {% include 'app/calendar/day.html' %}
     </div>
 
@@ -44,11 +44,11 @@
 
     </div>
 
-    <div class="mt-20 md:ml-[300px] p-4" id="weekView">
+    <div class="mt-20 md:ml-[300px] p-4 hidden" id="weekView">
         {% include 'app/calendar/week.html' %}
     </div>
 
-     <div class="mt-20 md:ml-[300px] p-4" id="monthView">
+     <div class="mt-20 md:ml-[300px] p-4 hidden" id="monthView">
         {% include 'app/calendar/month.html' %}
     </div>
 
