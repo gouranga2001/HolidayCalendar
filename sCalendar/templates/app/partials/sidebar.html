@@ -1,0 +1,55 @@
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sidebar</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'app/partials/sidebar.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Sidebar Toggle Button (Mobile) -->
+    <button id="openSidebar" class="md:hidden fixed top-4 left-4 z-50 p-2 bg-transparent text-black rounded" aria-label="Open Sidebar">
+        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8.99994 10 7 11.9999l1.99994 2M12 5v14M5 4h14c.5523 0 1 .44772 1 1v14c0 .5523-.4477 1-1 1H5c-.55228 0-1-.4477-1-1V5c0-.55228.44772-1 1-1Z" />
+        </svg>
+    </button>
+
+    <!-- Sidebar -->
+    <div id="sidebar" class="fixed top-0 left-0 w-[300px]  min-h-screen bg-gray-900 text-white transition-transform duration-300 ease-in-out z-50 -translate-x-full md:translate-x-0 md:border-r-2 md:border-black">
+        
+        <!-- Close Button (Mobile) -->
+        <button id="closeSidebar" class="md:hidden absolute top-4 left-4 bg-transparent text-white" aria-label="Close Sidebar">
+            <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+
+        <!-- Plus Icon -->
+        <button id="addNote" class="absolute right-4 top-4 cursor-pointer">
+            <img src="{% static 'assets/plus.svg' %}" alt="Plus Icon" class="w-5 h-5 bg-gray-400 rounded stroke-white">
+        </button>
+
+    <!-- Sidebar Content -->
+
+        <!-- sidebar calendar -->
+        <ul class="mt-8">
+            <li>
+                {% include 'app/calendar/calendar.html' %}
+            </li>
+        </ul>
+        
+    </div>
+    <!-- add note  -->
+    <div class="addNoteModal">
+    {% include 'app/partials/addNoteModal.html' %}
+    </div>
+     
+        
+
+
+</body>
+

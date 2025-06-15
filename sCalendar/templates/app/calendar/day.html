@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+   
+    <script src="{% static 'app/calendar/day.js' %}"></script>
+    <title>Day View</title>
+</head>
+
+<body>
+    <div class="outer relative shadow-lg bg-white rounded-md transition-all">
+        <div class="flex"><div class="h-[60px]" id="spaceForHoliday"></div></div>
+        <div class="flex">
+            <!-- Time column -->
+            <div class="w-20 bg-white flex flex-col z-10">
+                
+                <div class="h-[60px]"></div> <!-- Empty top cell -->
+                {% for i in time %}
+                    {% if i == 0 %}
+                        {% with hour=12 perriod="AM" %}
+                            <div class="h-[60px] text-right pr-2 text-xs text-gray-500 pt-1">
+                                {{ hour }} {{ perriod }}
+                            </div>
+                        {% endwith %}
+                    {% else %}
+                        {% if i < 12 %}
+                            {% with hour=i perriod="AM" %}
+                                <div class="h-[60px] text-right pr-2 text-xs text-gray-500 pt-1">
+                                    {{ hour }} {{ perriod }}
+                                </div>
+                            {% endwith %}
+                        {% elif i == 12 %}
+                            {% with hour=12 perriod="PM" %}
+                                <div class="h-[60px] text-right pr-2 text-xs text-gray-500 pt-1">
+                                    {{ hour }} {{ perriod }}
+                                </div>
+                            {% endwith %}
+                        {% else %}
+                            {% with hour=i|add:"-12" perriod="PM" %}
+                                <div class="h-[60px] text-right pr-2 text-xs text-gray-500 pt-1">
+                                    {{ hour }} {{ perriod }}
+                                </div>
+                            {% endwith %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+
+
+            </div>
+
+            <!-- Day view column -->
+            <div class="w-full flex flex-col">
+                <!-- Header -->
+                <!-- <div class=" border-b border-gray-300 h-[60px] flex items-center justify-center"> -->
+                    <!-- <div class="text-center text-sm text-gray-700 font-medium bg-white px-4 py-2 rounded">
+                        {{ current_day_name }} <span class="text-xs text-gray-500">({{ current_day_date }})</span>
+                    </div> -->
+                <!-- </div> -->
+
+                <!-- Time slots -->
+               <div class="flex flex-col relative time" style="height: 1440px;">
+                    {% for i in time %}
+                        <div class="h-[60px] border-t border-dotted border-gray-300"></div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

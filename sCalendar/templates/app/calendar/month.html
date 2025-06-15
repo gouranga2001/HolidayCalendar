@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'app/calendar/month.js' %}"></script>
+    <title>Month View</title>
+</head>
+<body>
+<div class="outer relative shadow-lg bg-white rounded-md transition-all">
+    <div class="calendar-wrapper">
+        <!-- Header: Day names -->
+        <div class="grid grid-cols-7 bg-gray-100 border-b border-gray-300 h-[60px] month-header"></div>
+
+        <!-- Month Grid -->
+        <div class="month-grid grid grid-cols-7 auto-rows-[120px] bg-white"></div>
+    </div>
+</div>
+</body>
+</html>

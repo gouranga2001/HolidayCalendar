@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Holiday Calendar</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="{% static 'app/index.js' %}"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+
+        body {
+            font-family: "Open Sans", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            font-style: normal;
+            font-variation-settings:"wdth" 100;
+        }
+    </style>
+
+</head>
+
+<body >
+    <div class="sidebar">
+        {% include 'app/partials/sidebar.html' %}
+    </div>
+
+    <div class="navbar">
+        {% include 'app/partials/navbar.html' %}
+    </div>
+
+    <div class="mt-20 md:ml-[300px] p-4 hidden" id="dayView">
+        {% include 'app/calendar/day.html' %}
+    </div>
+
+    <div class="toast">
+        {% include 'app/partials/toast.html' %}
+
+    </div>
+
+    <div class="mt-20 md:ml-[300px] p-4 hidden" id="weekView">
+        {% include 'app/calendar/week.html' %}
+    </div>
+
+     <div class="mt-20 md:ml-[300px] p-4 hidden" id="monthView">
+        {% include 'app/calendar/month.html' %}
+    </div>
+
+
+
+
+
+</body>
+
+</html>
