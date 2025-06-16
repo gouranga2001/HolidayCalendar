@@ -42,7 +42,7 @@ $(document).ready(function () {
                 }
                  // call getEvents(selectedDate) here to get the events of the designated date 
                 getEvents(selectedDate)
-                
+                updateWeekViewHeader(selectedDate);
             });
                 
 
