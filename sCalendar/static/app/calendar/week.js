@@ -1,4 +1,4 @@
-$(document).ready(function (){
+$(document).ready(function () {
 
 
     const startHour = 0;
@@ -54,8 +54,9 @@ $(document).ready(function (){
         }
         $weekGrid.append($dayCol);
     }
+    getWeekEvents();
 })
-    function updateWeekViewHeader(selectedDateStr) {
+function updateWeekViewHeader(selectedDateStr) {
     const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
     const selectedDate = new Date(selectedDateStr);
@@ -85,5 +86,89 @@ $(document).ready(function (){
 
         $dayHeader.append($col);
     }
+}
+
+function getWeekEvents(selectedDateStr = null) {
+    const today = selectedDateStr ? new Date(selectedDateStr) : new Date();
+    const dayOfWeek = today.getDay();
+    const offset = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+    const monday = new Date(today);
+    monday.setDate(today.getDate() + offset);
+
+    const sunday = new Date(monday);
+    sunday.setDate(monday.getDate() + 6);
+
+    const startStr = monday.toISOString().split("T")[0];
+    const endStr = sunday.toISOString().split("T")[0];
+
+    $.ajax({
+        type: "GET",
+        url: "api/calendar/filter_note/",
+        data: {
+            start_date: startStr,
+            end_date: endStr
+        },
+        success: function (response) {
+            renderWeekEvents(response);
+            console.log("week view response: ", response);
+
+        },
+        error: function (xhr, status, error) {
+            console.error(error);
+        }
+    });
+}
+
+
+function renderWeekEvents(events) {
+    $(".week-grid .event-box").remove(); // Clean previous
+
+    const columns = $(".week-grid").children();
+    console.log("Rendering events... columns:", columns.length); // Expect 7
+
+    const toHour = time => {
+        const [h, m] = time.split(":").map(Number);
+        return h + m / 60;
+    };
+
+    events.forEach(event => {
+        console.log("Event:", event);
+
+        const date = new Date(event.start_date);
+        const dayIndex = (date.getDay() + 6) % 7; // Map Sunday=0 to index 6
+        console.log("Date:", event.start_date, "→ dayIndex:", dayIndex);
+
+        const start = toHour(event.start_time);
+        const end = toHour(event.end_time);
+        const top = start * 60;
+        const height = Math.max((end - start) * 60, 60);
+
+        const startTime = event.start_time.slice(0, 5);
+        const endTime = event.end_time.slice(0, 5);
+
+        const $event = $(`
+    <div 
+        class="event-box absolute text-white px-2 py-1 rounded-lg shadow-md text-xs border border-blue-600 hover:bg-blue-600 transition-all duration-150 overflow-hidden"
+        style="
+            top: ${top}px;
+            height: ${height}px;
+            left: 2px;
+            right: 2px;
+            width: calc(100% - 4px);
+            background-color: ${event.color || '#3B82F6'};
+        "
+    >
+        <div class="font-semibold truncate">${event.note_title}</div>
+        <div class="text-[10px] opacity-90 mt-1">${startTime} - ${endTime}</div>
+    </div>
+`);
+
+
+        if (columns[dayIndex]) {
+            $(columns[dayIndex]).append($event);
+        } else {
+            console.warn("Invalid dayIndex:", dayIndex, "→ event skipped");
+        }
+    });
 }
 

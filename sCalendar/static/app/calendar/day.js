@@ -86,7 +86,7 @@
 
             const html = `
             <div 
-                class="event-box absolute text-white px-3 py-2 rounded-lg shadow-md text-sm leading-tight border border-blue-600 hover:bg-blue-600 transition-all duration-150 overflow-hidden w-full"
+                class="event-box absolute text-white px-3 py-2 rounded-lg shadow-md text-sm leading-tight border border-blue-600 hover:bg-blue-600 transition-all duration-150 overflow-hidden w-full "
                 style="
                     top: ${top}px; 
                     left: ${containerLeft}px; 
