@@ -35,7 +35,7 @@ function renderMonthGrid(selectedDate = new Date()) {
         const isCurrentMonth = dayNum >= 1 && dayNum <= totalDays;
 
         const $cell = $('<div>', {
-            class: `border border-gray-200 p-1 text-xs text-gray-700 relative overflow-hidden min-h-[80px] ${isCurrentMonth ? '' : 'bg-gray-50 text-gray-300'}`,
+            class: `border border-gray-200 p-1 text-xs text-gray-700 relative overflow-hidden min-h-[150px] ${isCurrentMonth ? '' : 'bg-gray-50 text-gray-300'}`,
             'data-date': isCurrentMonth ? `${year}-${String(month + 1).padStart(2, '0')}-${String(dayNum).padStart(2, '0')}` : ''
         });
 
@@ -88,7 +88,7 @@ function renderMonthEvents(events) {
         if ($targetCell.length) {
             const $event = $(`
                 <div 
-                    class="event-box mt-1 px-2 py-[3px] rounded bg-blue-500 text-white text-[10px] leading-snug truncate shadow-sm border border-blue-700 hover:bg-blue-600 transition-all"
+                    class="event-box mt-1 px-2 py-[3px] rounded bg-blue-500 text-white text-[10px] leading-snug truncate shadow-sm border border-blue-700 hover:bg-blue-600 transition-all mr-4"
                     title="${event.note_title} (${startTime} - ${endTime})"
                 >
                     <div class="font-medium truncate">${event.note_title}</div>
