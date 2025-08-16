@@ -14,21 +14,22 @@
 
 <body>
     <nav
-        class="fixed top-0 left-0 md:left-[300px] w-full md:w-[calc(100%-300px)] bg-white shadow-md z-40 h-16 transition-all duration-300">
-        <div class="max-w-screen-xl mx-auto flex justify-around items-center px-2 py-2">
+        class="fixed top-0 left-0 md:left-[300px] w-full md:w-[calc(100%-300px)] bg-white shadow-md z-40 transition-all duration-300">
+
+        <div class="max-w-screen-xl mx-auto flex flex-wrap items-center justify-between gap-2 px-2 py-2 h-auto">
 
             <!-- Sidebar Toggle Button (Mobile) -->
             <button id="openSidebar"
                 class="md:hidden w-10 h-10 flex items-center justify-center bg-transparent text-black rounded focus:outline-none">
-                <svg class="w-6 h-6 pointer-events-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg class="w-6 h-6 pointer-events-none" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
                     <path d="M9 10L7 12l2 2M12 5v14M5 4h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V5a1 1 0 011-1z" />
                 </svg>
             </button>
 
-
             <!-- Mobile Dropdown -->
-            <div class="relative md:hidden">
+            <div class="relative md:hidden order-2">
                 <button
                     class="dropdown-button flex items-center justify-center space-x-1 w-24 h-8 bg-[#dc2625] text-white rounded-md text-sm">
                     <span>Day</span>
@@ -47,14 +48,15 @@
             </div>
 
             <!-- Desktop Menu -->
-            <ul class="hidden md:flex space-x-2">
+            <ul class="hidden md:flex space-x-2 order-1">
                 <li><button class="desktop-menu w-24 h-8 rounded-md hover:bg-gray-200 day text-sm">Day</button></li>
                 <li><button class="desktop-menu w-24 h-8 rounded-md hover:bg-gray-200 week text-sm">Week</button></li>
                 <li><button class="desktop-menu w-24 h-8 rounded-md hover:bg-gray-200 month text-sm">Month</button></li>
             </ul>
 
             <!-- Prev/Label/Next -->
-            <ul class="flex items-center rounded-lg overflow-hidden shadow-sm border border-gray-200 bg-gray-50">
+            <ul
+                class="flex items-center rounded-lg overflow-hidden shadow-sm border border-gray-200 bg-gray-50 order-3">
                 <li>
                     <button
                         class="w-7 h-7 md:w-9 md:h-7 bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition duration-200">
@@ -79,8 +81,8 @@
                 </li>
             </ul>
 
-            <!-- Search Bar / Icon -->
-            <div class="relative hidden sm:block w-80">
+            <!-- Search Bar (only visible on large screens) -->
+            <div class="relative hidden lg:flex flex-1 max-w-md order-4">
                 <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                     <svg class="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none"
                         viewBox="0 0 20 20">
@@ -93,8 +95,8 @@
                     placeholder="Search...">
             </div>
 
-            <!-- Search Icon (Mobile) -->
-            <button id="mobileSearchBtn" class="sm:hidden p-1 rounded">
+            <!-- Search Icon (visible on sm + md, hidden on large) -->
+            <button id="mobileSearchBtn" class="lg:hidden p-1 rounded order-5">
                 <svg class="w-5 h-5 text-gray-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
@@ -103,6 +105,7 @@
 
         </div>
     </nav>
+
 
     <!-- Mobile Search Overlay -->
     <div id="mobileSearchOverlay" class="fixed inset-0 bg-gray-100 hidden z-50">
