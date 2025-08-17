@@ -14,8 +14,12 @@
             currentDate = `${year}-${month}-${day}`;
         }
 
+        let displayDate = new Date(currentDate);
+        let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        let formatted = displayDate.toLocaleDateString('en-US', options);
 
-        console.log(currentDate);
+        document.getElementById("event-date-header").innerText = formatted;
+
 
         $.ajax({
             type: "GET",
