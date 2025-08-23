@@ -90,8 +90,11 @@ function updateWeekViewHeader(selectedDateStr) {
 
 function getWeekEvents(selectedDateStr = null) {
     const today = selectedDateStr ? new Date(selectedDateStr) : new Date();
+
     const dayOfWeek = today.getDay();
+
     const offset = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+
     const monday = new Date(today);
     monday.setDate(today.getDate() + offset);
 
@@ -108,9 +111,15 @@ function getWeekEvents(selectedDateStr = null) {
 
     $("#week-date-header").text(`Week ${isoWeek} • ${month}`);
 
+    // Fix timezone issue - use local date formatting instead of toISOString()
+    const startStr = monday.getFullYear() + '-' +
+        String(monday.getMonth() + 1).padStart(2, '0') + '-' +
+        String(monday.getDate()).padStart(2, '0');
 
-    const startStr = monday.toISOString().split("T")[0];
-    const endStr = sunday.toISOString().split("T")[0];
+    const endStr = sunday.getFullYear() + '-' +
+        String(sunday.getMonth() + 1).padStart(2, '0') + '-' +
+        String(sunday.getDate()).padStart(2, '0');
+
 
     $.ajax({
         type: "GET",
@@ -120,16 +129,14 @@ function getWeekEvents(selectedDateStr = null) {
             end_date: endStr
         },
         success: function (response) {
+            console.log("week view response", response)
             renderWeekEvents(response);
-            console.log("week view response: ", response);
-
         },
         error: function (xhr, status, error) {
             console.error(error);
         }
     });
 }
-
 
 
 function renderWeekEvents(events) {
@@ -148,7 +155,6 @@ function renderWeekEvents(events) {
 
         const date = new Date(event.start_date);
         const dayIndex = (date.getDay() + 6) % 7; // Map Sunday=0 to index 6
-        console.log("Date:", event.start_date, "→ dayIndex:", dayIndex);
 
         const start = toHour(event.start_time);
         const end = toHour(event.end_time);
