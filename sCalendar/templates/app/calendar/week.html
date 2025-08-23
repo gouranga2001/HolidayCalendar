@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,33 +11,42 @@
     <script src="{% static 'app/calendar/calendar.js' %}"></script>
     <title>Document</title>
 </head>
-<body>
-<body>
-    <div class="outer relative shadow-lg bg-white rounded-md transition-all">
-        <div class="flex">
-            <div class="h-[60px]" id="spaceForHoliday"></div>
-        </div>
-        <div class="flex">
-            <!-- Time column -->
-            <div class="time-column w-20 bg-white flex flex-col z-10"></div>
 
-            <!-- Calendar -->
-            <div class="w-full flex flex-col">
-                <!-- Header: Day names + dates -->
-                <div class="grid grid-cols-7 bg-gray-100 border-b border-gray-300 h-[60px] day-header"></div>
+<body>
 
-                <!-- Week grid -->
-                <div class="week-grid grid grid-cols-7" style="height: 1440px;"></div>
-                <div class="flex">
-                <div class="h-[20px]" id="extraSpacebelow"></div>
+    <body>
+        <div class="outer relative shadow-lg bg-white rounded-md transition-all">
+
+
+            <div class="flex">
+                <div class="h-[60px] flex items-center justify-center w-full bg-white border-b border-gray-200">
+                    <div id="week-date-header" class="text-base text-gray-800 font-semibold p-2">
+                        <!-- JS will fill this -->
+                    </div>
+                </div>
             </div>
+            <div class="flex">
+                <!-- Time column -->
+                <div class="time-column w-20 bg-white flex flex-col z-10"></div>
+
+                <!-- Calendar -->
+                <div class="w-full flex flex-col">
+                    <!-- Header: Day names + dates -->
+                    <div class="grid grid-cols-7 bg-gray-100 border-b border-gray-300 h-[60px] day-header"></div>
+
+                    <!-- Week grid -->
+                    <div class="week-grid grid grid-cols-7" style="height: 1440px;"></div>
+                    <div class="flex">
+                        <div class="h-[20px]" id="extraSpacebelow"></div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+    </body>
+
+
+
+
 </body>
 
-
-
-
-</body>
 </html>

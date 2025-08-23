@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,15 +10,26 @@
     <script src="{% static 'app/calendar/month.js' %}"></script>
     <title>Month View</title>
 </head>
-<body>
-<div class="outer relative shadow-lg bg-white rounded-md transition-all">
-    <div class="calendar-wrapper">
-        <!-- Header: Day names -->
-        <div class="grid grid-cols-7 bg-gray-100 border-b border-gray-300 h-[60px] month-header"></div>
 
-        <!-- Month Grid -->
-        <div class="month-grid grid grid-cols-7 auto-rows-[150px] bg-white"></div>
+<body>
+    <div class="outer relative shadow-lg bg-white rounded-md transition-all">
+        <!-- Month Header -->
+        <div class="flex">
+            <div class="h-[60px] flex items-center justify-center w-full bg-white border-b border-gray-200">
+                <div id="month-date-header" class="text-base text-gray-800 font-semibold p-2">
+                    <!-- JS will fill this -->
+                </div>
+            </div>
+        </div>
+
+        <div class="calendar-wrapper">
+            <!-- Header: Day names -->
+            <div class="grid grid-cols-7 bg-gray-100 border-b border-gray-300 h-[60px] month-header"></div>
+
+            <!-- Month Grid -->
+            <div class="month-grid grid grid-cols-7 auto-rows-[180px] bg-white"></div>
+        </div>
     </div>
-</div>
 </body>
+
 </html>

@@ -98,6 +98,17 @@ function getWeekEvents(selectedDateStr = null) {
     const sunday = new Date(monday);
     sunday.setDate(monday.getDate() + 6);
 
+    // ISO Week number
+    const oneJan = new Date(monday.getFullYear(), 0, 1);
+    const daysSince = Math.floor((monday - oneJan) / (24 * 60 * 60 * 1000));
+    const isoWeek = Math.ceil((daysSince + oneJan.getDay() + 1) / 7);
+
+    // Current month
+    const month = monday.toLocaleString("en-US", { month: "long" });
+
+    $("#week-date-header").text(`Week ${isoWeek} • ${month}`);
+
+
     const startStr = monday.toISOString().split("T")[0];
     const endStr = sunday.toISOString().split("T")[0];
 
@@ -118,6 +129,7 @@ function getWeekEvents(selectedDateStr = null) {
         }
     });
 }
+
 
 
 function renderWeekEvents(events) {
@@ -159,7 +171,6 @@ function renderWeekEvents(events) {
         "
     >
         <div class="font-semibold truncate">${event.note_title}</div>
-        <div class="text-[10px] opacity-90 mt-1">${startTime} - ${endTime}</div>
     </div>
 `);
 
@@ -171,4 +182,3 @@ function renderWeekEvents(events) {
         }
     });
 }
-

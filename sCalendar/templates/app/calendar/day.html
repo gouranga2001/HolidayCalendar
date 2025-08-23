@@ -12,13 +12,13 @@
 
 <body>
     <div class="outer relative shadow-lg bg-white rounded-md transition-all">
+        <!-- Header -->
         <div class="flex">
-            <div class="h-[60px] flex items-center justify-center" id="spaceForHoliday">
-                <div id="event-date-header" class="text-base text-gray-800 font-semibold p-5 m-5">
-                    <!-- JS will fill this -->
+            <div class="h-[60px] flex items-center justify-center w-full bg-white border-b border-gray-200">
+                <div id="event-date-header" class="text-base text-gray-800 font-semibold p-2">
+                    <!-- JS will fill this (e.g. August 19, 2025) -->
                 </div>
             </div>
-
         </div>
         <div class="flex">
             <!-- Time column -->
@@ -44,21 +44,17 @@
         </div>
 
         <!-- Day view column -->
-        <div class="w-full flex flex-col">
+        <div class="w-full">
             <!-- Time slots -->
-            <div class="flex flex-col relative time" style="height: 1440px;">
+            <div class="relative time" style="height: 1440px;">
                 {% for i in time %}
-                <div class="h-[60px] border-t border-dotted border-gray-300 relative">
-
-                </div>
+                <div class="h-[60px] border-t border-dotted border-gray-300 relative"></div>
                 {% endfor %}
                 <!-- Extra border for after 11 PM -->
                 <div class="h-[60px] border-t border-dotted border-gray-300"></div>
             </div>
-            <!-- <div class="flex">
-                <div class="h-[10px]" id="spaceForHoliday"></div>
-            </div> -->
         </div>
+
     </div>
     </div>
 

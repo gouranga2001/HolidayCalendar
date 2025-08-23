@@ -1,6 +1,6 @@
 $(document).ready(function () {
     console.log("Month.js loaded and ready!...............................................");
-    
+
 
     const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
@@ -23,6 +23,9 @@ function renderMonthGrid(selectedDate = new Date()) {
 
     const year = selectedDate.getFullYear();
     const month = selectedDate.getMonth(); // 0-indexed
+
+    const monthName = selectedDate.toLocaleString("en-US", { month: "long" });
+    $("#month-date-header").text(`${monthName} ${year}`);
 
     const firstDayOfMonth = new Date(year, month, 1);
     const lastDayOfMonth = new Date(year, month + 1, 0);
@@ -67,7 +70,7 @@ function getMonthEvents(year, month) {
         },
         success: function (response) {
             renderMonthEvents(response);
-            console.log("month view response:",response)
+            console.log("month view response:", response)
         },
         error: function (xhr, status, error) {
             console.error(error);
@@ -92,7 +95,7 @@ function renderMonthEvents(events) {
                     title="${event.note_title} (${startTime} - ${endTime})"
                 >
                     <div class="font-medium truncate">${event.note_title}</div>
-                    <div class="opacity-80 text-[9px]">${startTime} - ${endTime}</div>
+
                 </div>
             `);
             $targetCell.append($event);
