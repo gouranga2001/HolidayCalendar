@@ -5,52 +5,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="{% static 'app/calendar/calendar.js' %}"></script>
-    <script src="{% static 'app/calendar/day.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <title>day</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Day View</title>
 </head>
 
 <body>
-    <div class="shadow-lg bg-white rounded-md flex flex-row transition-all">
+    <div class="outer relative shadow-lg bg-white rounded-md transition-all">
+        <!-- Header -->
+        <div class="flex">
+            <div class="h-[60px] flex items-center justify-center w-full bg-white border-b border-gray-200">
+                <div id="event-date-header" class="text-base text-gray-800 font-semibold p-2">
+                    <!-- JS will fill this (e.g. August 19, 2025) -->
+                </div>
+            </div>
+        </div>
+        <div class="flex">
+            <!-- Time column -->
+            <div class="w-20 bg-white flex flex-col z-10">
 
-        <div class="w-full relative h-[1440px] time pl-20 overflow-y-auto border-l border-gray-300 ">
-            {% for i in time %}
-            {% if i >= 12 %}
-            {% with perriod="PM" %}
-            {% if i == 12 %}
-            {% with hour=12 %}
-            <div class="relative h-[60px] flex items-center gap-2 px-4">
-                <span class="text-sm whitespace-nowrap w-14">{{ hour }} {{ perriod }}</span>
-                <div class="w-full border-t border-dotted border-gray-300"></div>
+                <!-- Show 12 AM at the very top -->
+                <div class="h-[60px] text-right pr-2 text-xs text-gray-500 pt-1">12 AM</div>
+
+                {% for i in time %}
+                {% if i > 0 %}
+                {% if i < 12 %} <div class="h-[60px] text-right pr-2 text-xs text-gray-500 pt-1">{{ i }} AM
             </div>
-            
-            {% endwith %}
+            {% elif i == 12 %}
+            <div class="h-[60px] text-right pr-2 text-xs text-gray-500 pt-1">12 PM</div>
             {% else %}
-            {% with hour=i|add:"-12" %}
-            <div class="relative h-[60px] flex items-center gap-2 px-4">
-                <span class="text-sm whitespace-nowrap w-14">{{ hour }} {{ perriod }}</span>
-                <div class="w-full border-t border-dotted border-gray-300"></div>
-            </div>
-            
-            {% endwith %}
+            <div class="h-[60px] text-right pr-2 text-xs text-gray-500 pt-1">{{ i|add:"-12" }} PM</div>
             {% endif %}
-            {% endwith %}
-            {% else %}
-            {% with perriod="AM" hour=i %}
-            <div class="relative h-[60px] flex items-center gap-2 px-4">
-                <span class="text-sm whitespace-nowrap w-14">{{ hour }} {{ perriod }}</span>
-                <div class="w-full border-t border-dotted border-gray-300"></div>
-            </div>
-            
-            {% endwith %}
             {% endif %}
             {% endfor %}
-
+            <div class="flex">
+                <div class="h-[20px]" id="extraSpacebelow"></div>
+            </div>
         </div>
-        
+
+        <!-- Day view column -->
+        <div class="w-full">
+            <!-- Time slots -->
+            <div class="relative time" style="height: 1440px;">
+                {% for i in time %}
+                <div class="h-[60px] border-t border-dotted border-gray-300 relative"></div>
+                {% endfor %}
+                <!-- Extra border for after 11 PM -->
+                <div class="h-[60px] border-t border-dotted border-gray-300"></div>
+            </div>
+        </div>
+
     </div>
+    </div>
+
+    <script src="{% static 'app/calendar/day.js' %}"></script>
 </body>
 
 </html>

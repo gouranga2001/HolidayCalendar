@@ -12,7 +12,9 @@ $(document).ready(function () {
             success: function (data) {
                 $("#calendarMonth").text(data.month);
                 $("#calendarYear").text(data.year);
-                updateCalendarGrid(data.days);
+                updateCalendarGrid(data.days,data.year,month);
+                
+                
             },
             error: function (xhr, status, error) {
                 console.error("Error fetching calendar:", error);
@@ -21,14 +23,28 @@ $(document).ready(function () {
     }
 
     // Function to update calendar UI
-    function updateCalendarGrid(days) {
+    function updateCalendarGrid(days, year, month) {
         let calendarGrid = $("#calendarDays");
         calendarGrid.empty(); // Clear previous days
 
-        days.forEach(({ day, isCurrentMonth, isToday }) => {
+        days.forEach(({ day, isCurrentMonth, isToday}) => {
+            const fullDate = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            
             let dayElement = $("<button>")
-                .addClass("p-1 text-center rounded-full cursor-pointer")
-                .text(day);
+                .addClass("p-1 text-center rounded-full cursor-pointer transition-colors duration-200 ease-in-out")
+                .text(day)
+                .attr("id", fullDate)
+                .click(function () {      
+                const selectedDate = $(this).attr("id");
+                $("#calendarDays button").removeClass("bg-gray-600");
+                if(!isToday){
+                    $(this).addClass("bg-gray-600")
+                }
+                 // call getEvents(selectedDate) here to get the events of the designated date 
+                getEvents(selectedDate)
+                updateWeekViewHeader(selectedDate);
+            });
+                
 
             if (!isCurrentMonth) {
                 dayElement.addClass("text-gray-500"); // Previous/next month days
@@ -46,6 +62,11 @@ $(document).ready(function () {
         });
     }
 
+   
+
+
+
+
     // Previous month button
     $("#prevMonth").click(function () {
         currentMonth = currentMonth === 1 ? 12 : currentMonth - 1;
@@ -62,4 +83,6 @@ $(document).ready(function () {
 
     // Initial fetch
     fetchCalendar(currentYear, currentMonth);
+
+    
 });

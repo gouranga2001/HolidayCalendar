@@ -1,44 +1,55 @@
 
-$(document).ready(function () {
-   function getEvents(){
-    let today = new Date();
-    let year = today.getFullYear();
-    let month = String(today.getMonth() + 1).padStart(2, '0'); // Month is zero-indexed, so add 1
-    let day = String(today.getDate()).padStart(2, '0'); // Ensure two digits
 
-    let currentDate = `${year}-${month}-${day}`;
-    console.log(currentDate);
+function getEvents(date = null) {
+    let currentDate;
+    if (date) {
+        currentDate = date
+    }
+    else {
+        let today = new Date();
+        let year = today.getFullYear();
+        let month = String(today.getMonth() + 1).padStart(2, '0'); // Month is zero-indexed, so add 1
+        let day = String(today.getDate()).padStart(2, '0'); // Ensure two digits
+
+        currentDate = `${year}-${month}-${day}`;
+    }
+
+    let displayDate = new Date(currentDate);
+    let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    let formatted = displayDate.toLocaleDateString('en-US', options);
+
+    document.getElementById("event-date-header").innerText = formatted;
+
 
     $.ajax({
-        type:"GET",
+        type: "GET",
         url: "api/calendar/filter_note/",
-        data:{  
-                start_date : currentDate,
-                end_date : currentDate
-            },
-        success: function(response){
-            console.log(response)
+        data: {
+            start_date: currentDate,
+            end_date: currentDate
+        },
+        success: function (response) {
+            // console.log(response)
             displayEvents(response)
         },
         error: function (xhr, status, error) {
             console.error(error);
         }
-        
+
     })
-   }
-   function displayEvents(events) {
+}
+function displayEvents(events) {
     $(".time").find(".event-box").remove();
 
-    const containerLeft = 150;
-    const containerRight = 16;
+    const containerWidth = $(".day-column").width(); // Now correct
     const gap = 6;
-    const containerWidth = $(".time").width() - containerLeft - containerRight;
 
     const parsed = parseAndSort(events);
     const clusters = groupOverlapping(parsed);
-    
-    clusters.forEach(cluster => renderCluster(cluster, containerLeft, containerWidth, gap));
+
+    clusters.forEach(cluster => renderCluster(cluster, 0, containerWidth, gap));
 }
+
 
 function parseAndSort(events) {
     return events.map((e, i) => {
@@ -67,29 +78,41 @@ function groupOverlapping(events) {
     return clusters;
 }
 
-function renderCluster(cluster, containerLeft, containerWidth, gap) {
-    const cols = cluster.length;
-    const totalGap = (cols - 1) * gap;
-    const colWidth = (containerWidth - totalGap) / cols;
 
-    cluster.forEach((event, i) => {
+
+function renderCluster(cluster, containerLeft = 0) {
+    cluster.forEach(event => {
         const top = event.start * 60;
-        const height = Math.max((event.end - event.start) * 60, 30);
-        const left = containerLeft + i * (colWidth + gap);
+        const height = Math.max((event.end - event.start) * 60, 60);
+
+        const startTime = event.start_time.slice(0, 5);
+        const endTime = event.end_time.slice(0, 5);
 
         const html = `
-            <div class="event-box absolute bg-blue-500 text-white p-2 rounded-md shadow-md text-[13px] leading-tight"
-                 style="top: ${top}px; height: ${height}px; left: ${left}px; width: ${colWidth}px;">
-                <p class="font-bold">${event.note_title}</p>
+            <div 
+                class="event-box absolute text-white px-3 py-2 rounded-lg shadow-md text-sm leading-tight border border-blue-600 hover:bg-blue-600 transition-all duration-150 overflow-hidden w-full "
+                style="
+                    top: ${top}px; 
+                    left: ${containerLeft}px; 
+                    height: ${height}px; 
+                    background-color: ${event.color || '#3B82F6'};
+                "
+            >
+                <div class="font-semibold truncate">${event.note_title}</div>
+
             </div>
         `;
+
         $(".time").append(html);
     });
 }
 
-
-   getEvents();
-   
-});
+getEvents();
 
 
+
+
+// there is a problem in col width we need to fix the width on how its being calculated
+
+
+//here every thing is fine all we need to fix the col width to 100%

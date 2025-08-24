@@ -16,6 +16,7 @@ class Note(models.Model):
     end_date = models.DateTimeField(null=False,blank=False)
     start_time = models.TimeField(null=False,blank=False)
     end_time = models.TimeField(null=False,blank=False)
+    # color = models.CharField(max_length=50,default="#3B82F6")
 
     
     def validate_dates(self):

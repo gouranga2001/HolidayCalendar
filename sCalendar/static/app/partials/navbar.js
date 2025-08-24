@@ -8,6 +8,14 @@ $(document).ready(function () {
         // Update dropdown text
         $(".dropdown-button span").text(isButtonActive);
 
+
+        //update next-previous button name according to the active button
+
+        const viewBtn = document.getElementById("view_day_week_month");
+        if (viewBtn){
+            viewBtn.innerHTML = isButtonActive;
+        }
+
         // Remove active styles from desktop menu
         $(".desktop-menu")
             .removeClass("bg-[#dc2625] text-white")

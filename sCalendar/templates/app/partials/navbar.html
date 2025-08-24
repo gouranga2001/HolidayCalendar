@@ -9,90 +9,127 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{% static 'app/partials/navbar.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="{% static 'app/partials/sidebar.js' %}"></script>
 </head>
 
 <body>
     <nav
-        class="fixed top-0 left-0 md:left-[300px] w-full md:w-[calc(100%-300px)] bg-white shadow-md z-40 h-16 transition-all duration-300">
-        <div class="max-w-screen-xl mx-auto flex justify-between items-center px-4 py-2">
+        class="fixed top-0 left-0 md:left-[300px] w-full md:w-[calc(100%-300px)] bg-white shadow-md z-40 transition-all duration-300">
 
-            <!-- Left-Side Navigation -->
-            <div class="flex items-center gap-4">
+        <div class="max-w-screen-xl mx-auto flex flex-wrap items-center justify-between gap-2 px-2 py-2 h-auto">
 
-                <!-- Mobile Dropdown -->
-                <div class="relative md:hidden mr-4 ml-16">
+            <!-- Sidebar Toggle Button (Mobile) -->
+            <button id="openSidebar"
+                class="md:hidden w-10 h-10 flex items-center justify-center bg-transparent text-black rounded focus:outline-none">
+                <svg class="w-6 h-6 pointer-events-none" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M9 10L7 12l2 2M12 5v14M5 4h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V5a1 1 0 011-1z" />
+                </svg>
+            </button>
+            <!-- Mobile Dropdown -->
+            <div class="relative md:hidden order-2">
+                <button
+                    class="dropdown-button flex items-center justify-center space-x-1 w-24 h-8 bg-[#dc2625] text-white rounded-md text-sm">
+                    <span>Day</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 15 15"
+                        stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                        <path d="M12 6L7.5 10.5L3 6" />
+                    </svg>
+                </button>
+                <ul class="dropdown-menu absolute left-0 mt-2 w-28 bg-white border rounded-md shadow-md hidden">
+                    <li><button class="block w-full text-left py-1 px-3 hover:bg-gray-200 day text-sm">Day</button></li>
+                    <li><button class="block w-full text-left py-1 px-3 hover:bg-gray-200 week text-sm">Week</button>
+                    </li>
+                    <li><button class="block w-full text-left py-1 px-3 hover:bg-gray-200 month text-sm">Month</button>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Desktop Menu -->
+            <ul class="hidden md:flex space-x-2 order-1">
+                <li><button class="desktop-menu w-24 h-8 rounded-md hover:bg-gray-200 day text-sm">Day</button></li>
+                <li><button class="desktop-menu w-24 h-8 rounded-md hover:bg-gray-200 week text-sm">Week</button></li>
+                <li><button class="desktop-menu w-24 h-8 rounded-md hover:bg-gray-200 month text-sm">Month</button></li>
+            </ul>
+
+            <!-- Prev/Label/Next -->
+            <ul
+                class="flex items-center rounded-lg overflow-hidden shadow-sm border border-gray-200 bg-gray-50 order-3">
+                <li>
                     <button
-                        class="dropdown-button flex items-center space-x-2 py-2 px-4 bg-[#dc2625] text-white rounded-lg">
-                        <span></span>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 15 15" fill="none"
-                            stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
-                            <path d="M12 6L7.5 10.5L3 6" />
+                        class="w-7 h-7 md:w-9 md:h-7 bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 20 20">
+                            <path fill="black" fill-rule="evenodd"
+                                d="M7.222 9.897c2.3-2.307 4.548-4.559 6.744-6.754a.65.65 0 0 0 0-.896c-.311-.346-.803-.316-1.027-.08c-2.276 2.282-4.657 4.667-7.143 7.156c-.197.162-.296.354-.296.574c0 .221.099.418.296.592l7.483 7.306a.749.749 0 0 0 1.044-.029c.358-.359.22-.713.058-.881a3407.721 3407.721 0 0 1-7.16-6.988Z" />
                         </svg>
                     </button>
-                    <ul class="dropdown-menu absolute left-0 mt-2 w-full bg-white border rounded-md shadow-md hidden">
-                        <li><button class="block w-full text-left py-2 px-4 hover:bg-gray-200 day">Day</button></li>
-                        <li><button class="block w-full text-left py-2 px-4 hover:bg-gray-200 week">Week</button></li>
-                        <li><button class="block w-full text-left py-2 px-4 hover:bg-gray-200 month">Month</button></li>
-                        <li><button class="block w-full text-left py-2 px-4 hover:bg-gray-200">Year</button></li>
-                    </ul>
-                </div>
-
-                <!-- Desktop Menu -->
-                <ul class="hidden md:flex space-x-4 ">
-                    <li><button class="desktop-menu py-1 px-8 rounded-md hover:bg-gray-200 day" >Day</button></li>
-                    <li><button class="desktop-menu py-1 px-8 rounded-md hover:bg-gray-200 week">Week</button></li>
-                    <li><button class="desktop-menu py-1 px-8 rounded-md hover:bg-gray-200 month" >Month</button></li>
-                    <li><button class="desktop-menu py-1 px-8 rounded-md hover:bg-gray-200">Year</button></li>
-                </ul>
-
-                <ul class="flex items-center" id="view_forward_backward">
-                    <!-- Previous Button -->
-                    <li>
-                        <button class="w-8 h-6 bg-gray-100 text-black rounded-l-md border-r border-gray-300 flex items-center justify-center hover:bg-gray-300 transition duration-200 mx-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 20 20">
-                                <path fill="black" fill-rule="evenodd" d="M7.222 9.897c2.3-2.307 4.548-4.559 6.744-6.754a.65.65 0 0 0 0-.896c-.311-.346-.803-.316-1.027-.08c-2.276 2.282-4.657 4.667-7.143 7.156c-.197.162-.296.354-.296.574c0 .221.099.418.296.592l7.483 7.306a.749.749 0 0 0 1.044-.029c.358-.359.22-.713.058-.881a3407.721 3407.721 0 0 1-7.16-6.988Z"/>
-                            </svg>
-                        </button>
-                    </li>
-                    
-                    <!-- View Mode Display -->
-                    <li class="w-14 h-6 bg-gray-100 text-black text-xs text-center border-r border-gray-300 flex items-center justify-center" id="view_day_week_month_year">
-                        Week
-                    </li>
-                    
-                    <!-- Next Button -->
-                    <li>
-                        <button class="w-8 h-6 bg-gray-100 text-black rounded-r-md flex items-center justify-center hover:bg-gray-300 transition duration-200 mx-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 20 20">
-                                <path fill="black" fill-rule="evenodd" d="m7.053 2.158l7.243 7.256a.66.66 0 0 1 .204.483a.705.705 0 0 1-.204.497c-2.62 2.556-5.145 5.023-7.575 7.401c-.125.117-.625.408-1.011-.024c-.386-.433-.152-.81 0-.966l7.068-6.908l-6.747-6.759c-.246-.339-.226-.652.06-.939c.286-.287.607-.3.962-.04Z"/>
-                            </svg>
-                        </button>
-                    </li>
-                </ul>
-
-
-
-
-
-            </div>
-
-            <!-- Right-Side Search Bar -->
-            <div class="flex-grow w-full sm:max-w-sm ml-4">
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <svg class="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none"
-                            viewBox="0 0 20 20">
-                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                </li>
+                <li class="flex w-12 h-7 md:w-13 md:h-7 bg-gray-100 text-black text-xs text-center border-x border-gray-300 items-center justify-center"
+                    id="view_day_week_month">
+                    Week
+                </li>
+                <li>
+                    <button
+                        class="w-7 h-7 md:w-9 md:h-7 bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 20 20">
+                            <path fill="black" fill-rule="evenodd"
+                                d="m7.053 2.158l7.243 7.256a.66.66 0 0 1 .204.483a.705.705 0 0 1-.204.497c-2.62 2.556-5.145 5.023-7.575 7.401c-.125.117-.625.408-1.011-.024c-.386-.433-.152-.81 0-.966l7.068-6.908l-6.747-6.759c-.246-.339-.226-.652.06-.939c.286-.287.607-.3.962-.04Z" />
                         </svg>
-                    </div>
-                    <input type="text"
-                        class="block w-full p-2 pl-10 text-sm text-black border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="Search...">
+                    </button>
+                </li>
+            </ul>
+
+            <!-- Search Bar (only visible on large screens) -->
+            <div class="relative hidden lg:flex flex-1 max-w-md order-4">
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <svg class="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                    </svg>
                 </div>
+                <input type="text"
+                    class="block w-full p-2 pl-8 text-sm text-black border border-gray-300 rounded-lg bg-gray-50 focus:ring-red-500 focus:border-red-500"
+                    placeholder="Search...">
             </div>
+
+            <!-- Search Icon (visible on sm + md, hidden on large) -->
+            <button id="mobileSearchBtn" class="lg:hidden p-1 rounded order-5">
+                <svg class="w-5 h-5 text-gray-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                </svg>
+            </button>
+
         </div>
     </nav>
+
+
+    <!-- Mobile Search Overlay -->
+    <div id="mobileSearchOverlay" class="fixed inset-0 bg-gray-100 hidden z-50">
+        <div class="absolute top-4 left-1/2 transform -translate-x-1/2 w-11/12 bg-white p-2 rounded-lg shadow-lg">
+            <input type="text" placeholder="Search..."
+                class="w-full p-2 text-black border border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500">
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            // Mobile Search Overlay Toggle
+            $("#mobileSearchBtn").on("click", function () {
+                $("#mobileSearchOverlay").removeClass("hidden");
+                $("#mobileSearchOverlay input").focus();
+            });
+
+            // Close on outside click
+            $("#mobileSearchOverlay").on("click", function (e) {
+                if (e.target.id === "mobileSearchOverlay") {
+                    $(this).addClass("hidden");
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

@@ -68,6 +68,10 @@ def get_calendar(request, year, month):
     except ValueError:
         return Response({"error": "Invalid year or month"}, status=400)
 
+
+
+
+
 #api to get the todays date and can toggle between before and after the dates    
 @api_view(['GET'])
 def get_date(request,offset=0):
@@ -83,6 +87,9 @@ def get_date(request,offset=0):
             str(e)
         },status=400)
     
+
+
+
 #api to create a note
 @csrf_protect
 @api_view(['POST'])
@@ -94,6 +101,9 @@ def create_note(request):
     else:
         # This will return the specific validation errors including empty note cases.
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
 
 
 #api to get a particular notes by its id
@@ -122,7 +132,9 @@ def get_all_notes(request):
         return Response(serializer.data)
 
 
- #api to update notes   
+
+
+#api to update notes   
 @api_view(['PUT'])
 def update_notes(request,id):
     try:
@@ -135,6 +147,9 @@ def update_notes(request,id):
             serializer.save()
             return Response(serializer.data)
 
+
+
+
 #api to delete notes
 @api_view(['DELETE'])
 def delete_notes(request,id):
@@ -146,6 +161,9 @@ def delete_notes(request,id):
         model.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
+
+
+
 
 @api_view(['GET'])
 def get_notes_based_on_date(request):
@@ -170,6 +188,9 @@ def get_notes_based_on_date(request):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+
+
+
 def notes_view(request, view_type):
     # today = timezone.localtime(timezone.now()).date()
     today = datetime.now()
@@ -190,8 +211,11 @@ def notes_view(request, view_type):
 
     return render(request, "notes_view.html", {"notes": notes, "view_type": view_type})
     
-# api to search with title(?search=) and search by start date(?=search_date=) or end date (?=end_date=)
 
+
+
+
+# api to search with title(?search=) and search by start date(?=search_date=) or end date (?=end_date=)
 class search_filter(django_filters.FilterSet):
     start_date = django_filters.DateFilter(field_name="start_date",lookup_expr = "date")
     end_date = django_filters.DateFilter(field_name="end_date",lookup_expr = "date")
@@ -207,6 +231,9 @@ class search_view(generics.ListCreateAPIView):
     filterset_class = search_filter
 
 
+
+
+
 def day_view(request):
     day = { 
         "time" : [], 
@@ -215,14 +242,23 @@ def day_view(request):
         day["time"].append(i)
     return day
 
+
+
+
 def week_view(request):
     return render(request,"app/calendar/week.html")
+
+
+
 
 def add_note(request):
     return render(request,"app/partials/addNoteModal.html")
 
 
 #linking index.html to the backend 
+
+
+
 def index(request):
     day_data = day_view(request)
     return render(request, "app/index.html",day_data)
