@@ -56,6 +56,15 @@ $(document).ready(function () {
     }
     getWeekEvents();
 })
+
+function formatDateLocal(date) {
+    return date.getFullYear() + '-' +
+        String(date.getMonth() + 1).padStart(2, '0') + '-' +
+        String(date.getDate()).padStart(2, '0');
+}
+
+
+
 function updateWeekViewHeader(selectedDateStr) {
     const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
@@ -112,13 +121,9 @@ function getWeekEvents(selectedDateStr = null) {
     $("#week-date-header").text(`Week ${isoWeek} • ${month}`);
 
     // Fix timezone issue - use local date formatting instead of toISOString()
-    const startStr = monday.getFullYear() + '-' +
-        String(monday.getMonth() + 1).padStart(2, '0') + '-' +
-        String(monday.getDate()).padStart(2, '0');
+    const startStr = formatDateLocal(monday);
 
-    const endStr = sunday.getFullYear() + '-' +
-        String(sunday.getMonth() + 1).padStart(2, '0') + '-' +
-        String(sunday.getDate()).padStart(2, '0');
+    const endStr = formatDateLocal(sunday);
 
 
     $.ajax({
@@ -143,7 +148,6 @@ function renderWeekEvents(events) {
     $(".week-grid .event-box").remove(); // Clean previous
 
     const columns = $(".week-grid").children();
-    console.log("Rendering events... columns:", columns.length); // Expect 7
 
     const toHour = time => {
         const [h, m] = time.split(":").map(Number);

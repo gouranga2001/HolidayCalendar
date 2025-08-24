@@ -2,24 +2,19 @@
 
 function getEvents(date = null) {
     let currentDate;
-    if (date) {
-        currentDate = date
-    }
-    else {
+        if (date) {
+        currentDate = date;
+    } else {
         let today = new Date();
-        let year = today.getFullYear();
-        let month = String(today.getMonth() + 1).padStart(2, '0'); // Month is zero-indexed, so add 1
-        let day = String(today.getDate()).padStart(2, '0'); // Ensure two digits
-
-        currentDate = `${year}-${month}-${day}`;
+        currentDate = formatDateLocal(today);
     }
+
 
     let displayDate = new Date(currentDate);
     let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     let formatted = displayDate.toLocaleDateString('en-US', options);
 
     document.getElementById("event-date-header").innerText = formatted;
-
 
     $.ajax({
         type: "GET",
@@ -29,7 +24,7 @@ function getEvents(date = null) {
             end_date: currentDate
         },
         success: function (response) {
-            // console.log(response)
+            console.log("day view response:",response)
             displayEvents(response)
         },
         error: function (xhr, status, error) {

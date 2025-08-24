@@ -17,6 +17,13 @@ $(document).ready(function () {
     renderMonthGrid();
 });
 
+function formatDateLocal(date) {
+    return date.getFullYear() + '-' +
+        String(date.getMonth() + 1).padStart(2, '0') + '-' +
+        String(date.getDate()).padStart(2, '0');
+}
+
+
 function renderMonthGrid(selectedDate = new Date()) {
     const $monthGrid = $('.month-grid');
     $monthGrid.empty();
@@ -58,8 +65,8 @@ function renderMonthGrid(selectedDate = new Date()) {
 }
 
 function getMonthEvents(year, month) {
-    const startDate = `${year}-${String(month).padStart(2, '0')}-01`;
-    const endDate = new Date(year, month, 0).toISOString().split("T")[0];
+    const startDate = formatDateLocal(new Date(year, month - 1, 1));
+    const endDate = formatDateLocal(new Date(year, month, 0));
 
     $.ajax({
         type: "GET",
@@ -82,25 +89,27 @@ function renderMonthEvents(events) {
     $(".month-grid .event-box").remove(); // Clear old boxes
 
     events.forEach(event => {
-        const eventDate = event.start_date.split("T")[0]; // Extract "YYYY-MM-DD"
-        const startTime = event.start_time.slice(0, 5);
-        const endTime = event.end_time.slice(0, 5);
+        const start = new Date(event.start_date);
+        const end = new Date(event.end_date);
 
-        const $targetCell = $(`.month-grid [data-date="${eventDate}"]`);
+        // Loop through all days from start → end
+        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+            const dateStr = formatDateLocal(d);
 
-        if ($targetCell.length) {
-            const $event = $(`
-                <div 
-                    class="event-box mt-1 px-2 py-[3px] rounded bg-blue-500 text-white text-[10px] leading-snug truncate shadow-sm border border-blue-700 hover:bg-blue-600 transition-all mr-4"
-                    title="${event.note_title} (${startTime} - ${endTime})"
-                >
-                    <div class="font-medium truncate">${event.note_title}</div>
+            const $targetCell = $(`.month-grid [data-date="${dateStr}"]`);
 
-                </div>
-            `);
-            $targetCell.append($event);
-        } else {
-            console.warn(`No matching cell found for ${eventDate}`);
+            if ($targetCell.length) {
+                const $event = $(`
+                    <div 
+                        class="event-box mt-1 px-2 py-[3px] rounded bg-blue-500 text-white text-[10px] leading-snug truncate shadow-sm border border-blue-700 hover:bg-blue-600 transition-all mr-4"
+                        title="${event.note_title} (${event.start_time.slice(0, 5)} - ${event.end_time.slice(0, 5)})"
+                    >
+                        <div class="font-medium truncate">${event.note_title}</div>
+                    </div>
+                `);
+
+                $targetCell.append($event);
+            }
         }
     });
 }
