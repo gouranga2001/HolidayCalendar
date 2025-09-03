@@ -6,7 +6,7 @@ function getEvents(date = null) {
         currentDate = date;
     } else {
         let today = new Date();
-        currentDate = formatDateLocal(today);
+        currentDate = today.toISOString().split("T")[0];
     }
 
 
