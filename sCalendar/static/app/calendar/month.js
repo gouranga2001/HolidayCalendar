@@ -1,3 +1,6 @@
+let currentMonthDate = new Date(); 
+
+
 $(document).ready(function () {
     console.log("Month.js loaded and ready!...............................................");
 
@@ -15,6 +18,17 @@ $(document).ready(function () {
 
     // Month grid rendering
     renderMonthGrid();
+
+     $("#prevBtn").click(function () {
+        currentMonthDate.setMonth(currentMonthDate.getMonth() - 1);
+        renderMonthGrid(currentMonthDate);
+    });
+
+    // Next button (go one month forward)
+    $("#nextBtn").click(function () {
+        currentMonthDate.setMonth(currentMonthDate.getMonth() + 1);
+        renderMonthGrid(currentMonthDate);
+    });
 });
 
 function formatDateLocal(date) {

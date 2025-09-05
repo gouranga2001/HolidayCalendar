@@ -1,8 +1,8 @@
+let currentDate = new Date().toISOString().split("T")[0];
 
 
 function getEvents(date = null) {
-    let currentDate;
-        if (date) {
+    if (date) {
         currentDate = date;
     } else {
         let today = new Date();
@@ -102,7 +102,25 @@ function renderCluster(cluster, containerLeft = 0) {
     });
 }
 
-getEvents();
+$(document).ready(function () {
+    getEvents();
+
+    $("#prevBtn").click(function () {
+        // parse as local-midnight to avoid timezone shifts, change day, convert back to YYYY-MM-DD
+        const dt = new Date(currentDate);
+        dt.setDate(dt.getDate() - 1);
+        currentDate = dt.toISOString().split('T')[0];
+        getEvents(currentDate);
+    });
+
+    $("#nextBtn").click(function () {
+        const dt = new Date(currentDate );
+        dt.setDate(dt.getDate() + 1);
+        currentDate = dt.toISOString().split('T')[0];
+        getEvents(currentDate);
+    });
+});
+
 
 
 

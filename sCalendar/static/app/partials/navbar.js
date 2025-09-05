@@ -1,7 +1,7 @@
 $(document).ready(function () {
     let isButtonActive = "Week"; // Default state
 
-    // ✅ Function to update the state consistently
+    // Function to update the state consistently
     function updateState(newState) {
         isButtonActive = newState;
 
@@ -27,10 +27,10 @@ $(document).ready(function () {
         }).addClass("bg-[#dc2625] text-white").removeClass("hover:bg-gray-200");
     }
 
-    // ✅ Initialize state on page load
+    // Initialize state on page load
     updateState(isButtonActive);
 
-    // ✅ Handle dropdown menu button click
+    // Handle dropdown menu button click
     $(".dropdown-button").click(function () {
         $(".dropdown-menu").toggleClass("hidden");
     });
@@ -41,7 +41,7 @@ $(document).ready(function () {
         updateState(newState);
     });
 
-    // ✅ Handle desktop menu button click
+    // Handle desktop menu button click
     $(".desktop-menu").click(function () {
         let newState = $(this).text();
         updateState(newState);

@@ -7,9 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Navbar</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="{% static 'app/partials/navbar.js' %}"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script src="{% static 'app/partials/sidebar.js' %}"></script>
+
 </head>
 
 <body>
@@ -29,7 +29,7 @@
             </button>
             <!-- Mobile Dropdown -->
             <div class="relative md:hidden order-2">
-                <button
+                <button 
                     class="dropdown-button flex items-center justify-center space-x-1 w-24 h-8 bg-[#dc2625] text-white rounded-md text-sm">
                     <span>Day</span>
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 15 15"
@@ -57,7 +57,7 @@
             <ul
                 class="flex items-center rounded-lg overflow-hidden shadow-sm border border-gray-200 bg-gray-50 order-3">
                 <li>
-                    <button
+                    <button id="prevBtn"
                         class="w-7 h-7 md:w-9 md:h-7 bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition duration-200">
                         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 20 20">
                             <path fill="black" fill-rule="evenodd"
@@ -70,7 +70,7 @@
                     Week
                 </li>
                 <li>
-                    <button
+                    <button id="nextBtn"
                         class="w-7 h-7 md:w-9 md:h-7 bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition duration-200">
                         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 20 20">
                             <path fill="black" fill-rule="evenodd"
