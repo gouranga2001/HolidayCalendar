@@ -1,13 +1,11 @@
-let currentDate = new Date().toISOString().split("T")[0];
-
+let currentDate = formatDateLocal(getGlobalDate());
 
 function getEvents(date = null) {
     if (date) {
-        currentDate = date;
-    } else {
-        let today = new Date();
-        currentDate = today.toISOString().split("T")[0];
-    }
+       currentDate = formatDateLocal(new Date(date));
+   } else {
+       currentDate = formatDateLocal(new Date());
+   }
 
 
     let displayDate = new Date(currentDate);
@@ -107,17 +105,19 @@ $(document).ready(function () {
 
     $("#prevBtn").click(function () {
         // parse as local-midnight to avoid timezone shifts, change day, convert back to YYYY-MM-DD
-        const dt = new Date(currentDate);
+        const dt = getGlobalDate();
         dt.setDate(dt.getDate() - 1);
-        currentDate = dt.toISOString().split('T')[0];
-        getEvents(currentDate);
+        setGlobalDate(dt);
+        getEvents(formatDateLocal(dt));
+
     });
 
     $("#nextBtn").click(function () {
-        const dt = new Date(currentDate );
+        const dt = getGlobalDate();
         dt.setDate(dt.getDate() + 1);
-        currentDate = dt.toISOString().split('T')[0];
-        getEvents(currentDate);
+        setGlobalDate(dt);
+        getEvents(formatDateLocal(dt));
+
     });
 });
 

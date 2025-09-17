@@ -1,9 +1,9 @@
 // ==========================
 // Global State
 // ==========================
-let currentSelectedDate = new Date();
+let currentSelectedDate = getGlobalDate();
 
-console.log("this is the current date",currentSelectedDate)
+console.log("this is the current date", currentSelectedDate)
 // ==========================
 // Utility Functions
 // ==========================
@@ -93,12 +93,12 @@ function renderWeekEvents(events) {
     });
 }
 
-function renderWeek(selectedDate) {
-    const dateStr = formatDateLocal(selectedDate);
+function renderWeek(date = getGlobalDate()) {
+    const dateStr = formatDateLocal(date);
+    setGlobalDate(date);             // keep global in sync
     updateWeekViewHeader(dateStr);
     getWeekEvents(dateStr);
 }
-
 
 // ==========================
 // Data Fetching
@@ -211,20 +211,25 @@ $(document).ready(function () {
 
     // Initial render
     getWeekEvents();
-    renderWeek(currentSelectedDate);
+    renderWeek(getGlobalDate());
 
     // ---- Hook prev/next buttons ----
     $("#prevBtn").click(function () {
         if ($("#view_day_week_month").text() === "Week") {
-            currentSelectedDate.setDate(currentSelectedDate.getDate() - 7);
-            renderWeek(currentSelectedDate);
+            const dt = getGlobalDate();      // get global
+            dt.setDate(dt.getDate() - 7);    // shift 1 week back
+            setGlobalDate(dt);               // update global
+            renderWeek(dt);                  // re-render
         }
     });
 
     $("#nextBtn").click(function () {
         if ($("#view_day_week_month").text() === "Week") {
-            currentSelectedDate.setDate(currentSelectedDate.getDate() + 7);
-            renderWeek(currentSelectedDate);
+            const dt = getGlobalDate();      // get global
+            dt.setDate(dt.getDate() + 7);    // shift 1 week forward
+            setGlobalDate(dt);               // update global
+            renderWeek(dt);                  // re-render
         }
     });
+
 });

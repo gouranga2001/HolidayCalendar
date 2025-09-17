@@ -1,4 +1,10 @@
-let currentMonthDate = new Date(); 
+function formatDateLocal(date) {
+    return date.getFullYear() + '-' +
+        String(date.getMonth() + 1).padStart(2, '0') + '-' +
+        String(date.getDate()).padStart(2, '0');
+}
+
+let currentMonthDate = getGlobalDate();
 
 
 $(document).ready(function () {
@@ -17,17 +23,25 @@ $(document).ready(function () {
     });
 
     // Month grid rendering
-    renderMonthGrid();
+    renderMonthGrid(getGlobalDate());
 
-     $("#prevBtn").click(function () {
-        currentMonthDate.setMonth(currentMonthDate.getMonth() - 1);
-        renderMonthGrid(currentMonthDate);
+    $("#prevBtn").click(function () {
+        if ($("#view_day_week_month").text() === "Month") {
+            const dt = getGlobalDate();
+            dt.setMonth(dt.getMonth() - 1);
+            setGlobalDate(dt);
+            renderMonthGrid(dt);
+        }
     });
 
     // Next button (go one month forward)
     $("#nextBtn").click(function () {
-        currentMonthDate.setMonth(currentMonthDate.getMonth() + 1);
-        renderMonthGrid(currentMonthDate);
+        if ($("#view_day_week_month").text() === "Month") {
+            const dt = getGlobalDate();
+            dt.setMonth(dt.getMonth() + 1);
+            setGlobalDate(dt);
+            renderMonthGrid(dt);
+        }
     });
 });
 
@@ -38,14 +52,16 @@ function formatDateLocal(date) {
 }
 
 
-function renderMonthGrid(selectedDate = new Date()) {
+function renderMonthGrid(date = getGlobalDate()) {
+    date = new Date(date);       // clone
+    setGlobalDate(date);
     const $monthGrid = $('.month-grid');
     $monthGrid.empty();
 
-    const year = selectedDate.getFullYear();
-    const month = selectedDate.getMonth(); // 0-indexed
+    const year = date.getFullYear();
+    const month = date.getMonth(); // 0-indexed
 
-    const monthName = selectedDate.toLocaleString("en-US", { month: "long" });
+    const monthName = date.toLocaleString("en-US", { month: "long" });
     $("#month-date-header").text(`${monthName} ${year}`);
 
     const firstDayOfMonth = new Date(year, month, 1);

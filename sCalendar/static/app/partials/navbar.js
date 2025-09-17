@@ -12,7 +12,7 @@ $(document).ready(function () {
         //update next-previous button name according to the active button
 
         const viewBtn = document.getElementById("view_day_week_month");
-        if (viewBtn){
+        if (viewBtn) {
             viewBtn.innerHTML = isButtonActive;
         }
 
@@ -25,6 +25,15 @@ $(document).ready(function () {
         $(".desktop-menu").filter(function () {
             return $(this).text() === isButtonActive;
         }).addClass("bg-[#dc2625] text-white").removeClass("hover:bg-gray-200");
+
+        // Sync with views
+        if (isButtonActive === "Day") {
+            getEvents(getGlobalDate());
+        } else if (isButtonActive === "Week") {
+            renderWeek(getGlobalDate());
+        } else if (isButtonActive === "Month") {
+            renderMonthGrid(getGlobalDate());
+        }
     }
 
     // Initialize state on page load
