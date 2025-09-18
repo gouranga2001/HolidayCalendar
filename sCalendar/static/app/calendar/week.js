@@ -210,7 +210,7 @@ $(document).ready(function () {
     }
 
     // Initial render
-    getWeekEvents();
+    // getWeekEvents();
     renderWeek(getGlobalDate());
 
     // ---- Hook prev/next buttons ----

@@ -12,9 +12,9 @@ $(document).ready(function () {
             success: function (data) {
                 $("#calendarMonth").text(data.month);
                 $("#calendarYear").text(data.year);
-                updateCalendarGrid(data.days,data.year,month);
-                
-                
+                updateCalendarGrid(data.days, data.year, month);
+
+
             },
             error: function (xhr, status, error) {
                 console.error("Error fetching calendar:", error);
@@ -27,24 +27,32 @@ $(document).ready(function () {
         let calendarGrid = $("#calendarDays");
         calendarGrid.empty(); // Clear previous days
 
-        days.forEach(({ day, isCurrentMonth, isToday}) => {
+        days.forEach(({ day, isCurrentMonth, isToday }) => {
             const fullDate = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-            
+
             let dayElement = $("<button>")
                 .addClass("p-1 text-center rounded-full cursor-pointer transition-colors duration-200 ease-in-out")
                 .text(day)
                 .attr("id", fullDate)
-                .click(function () {      
-                const selectedDate = $(this).attr("id");
-                $("#calendarDays button").removeClass("bg-gray-600");
-                if(!isToday){
-                    $(this).addClass("bg-gray-600")
-                }
-                 // call getEvents(selectedDate) here to get the events of the designated date 
-                getEvents(selectedDate)
-                updateWeekViewHeader(selectedDate);
-            });
-                
+                .click(function () {
+                    const selectedDateStr = $(this).attr("id"); // string
+                    const selectedDate = new Date(selectedDateStr); // convert to Date object
+
+                    $("#calendarDays button").removeClass("bg-gray-600");
+                    if (!isToday) {
+                        $(this).addClass("bg-gray-600");
+                    }
+
+                    // Day view → works with string
+                    getEvents(selectedDateStr);
+
+                    // Week & Month → must use Date object
+                    renderWeek(selectedDate);
+                    renderMonthGrid(selectedDate);
+
+                });
+
+
 
             if (!isCurrentMonth) {
                 dayElement.addClass("text-gray-500"); // Previous/next month days
@@ -62,7 +70,7 @@ $(document).ready(function () {
         });
     }
 
-   
+
 
 
 
@@ -84,5 +92,5 @@ $(document).ready(function () {
     // Initial fetch
     fetchCalendar(currentYear, currentMonth);
 
-    
+
 });
