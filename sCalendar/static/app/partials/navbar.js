@@ -1,5 +1,65 @@
 $(document).ready(function () {
     let isButtonActive = "Week"; // Default state
+    let searchTimeout = null;
+
+    function performSearch(query, isMobile = false) {
+        $.ajax({
+            url: `api/calendar/search/?search=${encodeURIComponent(query)}`,
+            method: "GET",
+            success: function (data) {
+                // console.log("Search results:", data);
+
+                let resultsContainer = isMobile ? $("#mobileSearchResults") : $("#desktopSearchResults");
+                resultsContainer.empty(); // clear old results
+
+                if (data.length === 0) {
+                    resultsContainer.append(`<div class="p-2 text-gray-500 text-sm">No results found</div>`);
+                } else {
+                    for (let i = 0; i < data.length; i++) {
+                        let item = data[i];
+                        resultsContainer.append(`
+                            <div class="p-2 hover:bg-gray-100 cursor-pointer text-sm"
+                                data-id="${item.id}">
+                                ${item.note_title}
+                            </div>
+                        `);
+                    }
+                }
+
+                resultsContainer.removeClass("hidden");
+            },
+            error: function (err) {
+                console.error("Search error:", err);
+            }
+        });
+    }
+
+
+    // Debounce input (desktop + mobile)
+    $("#desktopSearchInput").on("input", function () {
+        let query = $(this).val().trim();
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(function () {
+            if (query.length > 0) {
+                performSearch(query, false); // desktop
+            } else {
+                $("#desktopSearchResults").addClass("hidden");
+            }
+        }, 400);
+    });
+
+    $("#mobileSearchInput").on("input", function () {
+        let query = $(this).val().trim();
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(function () {
+            if (query.length > 0) {
+                performSearch(query, true); // mobile
+            } else {
+                $("#mobileSearchResults").addClass("hidden");
+            }
+        }, 400);
+    });
+
 
     // Function to update the state consistently
     function updateState(newState) {
