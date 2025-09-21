@@ -7,12 +7,14 @@ $(document).ready(function(){
         const viewMap = {
             'day': '#dayView',
             'week': '#weekView',
-            'month': '#monthView'
+            'month': '#monthView',
+            'search': '#searchView'
         };
         // Get the class name of the clicked button (either day, week, or month)
         const selectedClass = $(this).attr('class').split(' ').filter(cls => viewMap[cls])[0];
-        $('#dayView, #weekView, #monthView').hide();
+        $('#dayView, #weekView, #monthView,#searchView').hide();
         $(viewMap[selectedClass]).show();
     });
+    
 });
 

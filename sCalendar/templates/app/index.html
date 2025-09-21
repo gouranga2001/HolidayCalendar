@@ -53,6 +53,11 @@
 
     </div>
 
+    <div class="mt-20 md:ml-[300px] p-4 hidden" id="searchView">
+    {% include 'app/partials/searchView.html' %}
+    </div>
+
+
     <!-- Core calendar scripts -->
 <script src="{% static 'app/calendar/global.js' %}"></script>
 <script src="{% static 'app/calendar/calendar.js' %}"></script>
@@ -65,6 +70,7 @@
 <script src="{% static 'app/partials/sidebar.js' %}"></script>
 <script src="{% static 'app/partials/toast.js' %}"></script>
 <script src="{% static 'app/partials/addNoteModal.js' %}"></script>
+<script src="{% static 'app/partials/searchView.js' %}"></script>
 
 </body>
 
